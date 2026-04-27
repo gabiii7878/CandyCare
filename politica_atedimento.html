@@ -1,0 +1,1180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+     <link rel="icon" href="icon/icon_candycare 4.0.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Atendimento — CandyCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blush: #f2c4c4;
+      --nude: #e8b4b0;
+      --rose-gold: #c8956c;
+      --pale: #fdf5f3;
+      --white: #ffffff;
+      --soft-pink: #f9e8e6;
+      --text-dark: #2a1f1e;
+      --text-mid: #7a5c58;
+      --text-light: #b89490;
+      --gold: #c9a87c;
+      --divider: rgba(200,149,108,0.2);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--pale);
+      color: var(--text-dark);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── CURSOR ── */
+    @media (pointer: fine) { * { cursor: none; } }
+    #cursor, #cursor-ring { display: none; }
+    @media (pointer: fine) {
+      #cursor {
+        display: block;
+        width: 8px; height: 8px;
+        background: var(--rose-gold);
+        border-radius: 50%;
+        position: fixed; top: 0; left: 0;
+        pointer-events: none; z-index: 9999;
+        transition: transform 0.15s ease;
+      }
+      #cursor-ring {
+        display: block;
+        width: 28px; height: 28px;
+        border: 1px solid var(--blush);
+        border-radius: 50%;
+        position: fixed; top: 0; left: 0;
+        pointer-events: none; z-index: 9998;
+        transition: transform 0.4s ease, opacity 0.3s;
+      }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 100;
+      padding: 20px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(253,245,243,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--divider);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.6rem;
+      letter-spacing: 0.12em;
+      color: var(--text-dark);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rose-gold); }
+
+    .nav-links {
+      display: flex; gap: 40px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: 'Jost', sans-serif;
+      font-weight: 200;
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--rose-gold); }
+
+    /* Hamburger */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      z-index: 200;
+    }
+    .nav-toggle span {
+      display: block;
+      width: 24px; height: 1px;
+      background: var(--text-dark);
+      transition: all 0.3s ease;
+      transform-origin: center;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+    .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(253,245,243,0.98);
+      backdrop-filter: blur(16px);
+      z-index: 150;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--text-dark);
+      text-decoration: none;
+      letter-spacing: 0.1em;
+      transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--rose-gold); }
+
+    /* ── HERO ── */
+    .page-hero {
+      padding-top: 80px;
+      min-height: 52vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,196,196,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-hero::after {
+      content: '';
+      position: absolute;
+      bottom: -60px; left: -60px;
+      width: 260px; height: 260px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(200,149,108,0.10) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      padding: 80px 60px 60px;
+      max-width: 780px;
+    }
+
+    .hero-eyebrow {
+      font-size: 0.62rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rose-gold);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.12;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--rose-gold); }
+
+    .hero-sub {
+      font-size: 0.85rem;
+      line-height: 1.9;
+      color: var(--text-mid);
+      max-width: 520px;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-deco-line {
+      width: 1px;
+      height: 60px;
+      background: linear-gradient(to bottom, transparent, var(--rose-gold), transparent);
+      margin: 32px auto 0;
+      opacity: 0;
+      animation: fadeIn 1s 0.8s forwards;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--rose-gold);
+      padding: 14px 0;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-item {
+      display: inline-block;
+      font-size: 0.62rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: white;
+      padding: 0 32px;
+    }
+    .marquee-item::after {
+      content: '✦';
+      margin-left: 32px;
+      opacity: 0.6;
+    }
+
+    /* ── ÍNDICE ── */
+    .indice-section {
+      background: var(--soft-pink);
+      padding: 72px 60px;
+      display: flex;
+      gap: 80px;
+      align-items: flex-start;
+    }
+
+    .indice-label {
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--rose-gold);
+      white-space: nowrap;
+      padding-top: 4px;
+      flex-shrink: 0;
+    }
+
+    .indice-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0;
+      flex: 1;
+    }
+
+    .indice-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--divider);
+      text-decoration: none;
+      transition: all 0.3s;
+    }
+    .indice-item:nth-last-child(-n+3) { border-bottom: none; }
+    .indice-item:hover .indice-num { color: var(--rose-gold); }
+    .indice-item:hover .indice-name { color: var(--text-dark); }
+
+    .indice-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-light);
+      transition: color 0.3s;
+      width: 24px;
+      flex-shrink: 0;
+    }
+    .indice-name {
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      color: var(--text-mid);
+      transition: color 0.3s;
+    }
+
+    /* ── CONTEÚDO PRINCIPAL ── */
+    .content-wrap {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 60px;
+    }
+
+    /* ── SEÇÕES DE POLÍTICA ── */
+    .policy-section {
+      padding: 100px 0;
+      border-bottom: 1px solid var(--divider);
+    }
+    .policy-section:last-of-type { border-bottom: none; }
+
+    .policy-layout {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 80px;
+      align-items: start;
+    }
+
+    .policy-sidebar {
+      position: sticky;
+      top: 120px;
+    }
+
+    .policy-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--blush);
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+
+    .policy-eyebrow {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--rose-gold);
+      margin-bottom: 12px;
+    }
+
+    .policy-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      line-height: 1.25;
+      color: var(--text-dark);
+    }
+    .policy-title em { font-style: italic; color: var(--rose-gold); }
+
+    .deco-line {
+      width: 40px;
+      height: 1px;
+      background: var(--rose-gold);
+      margin-top: 20px;
+      opacity: 0.5;
+    }
+
+    .policy-body {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .policy-text {
+      font-size: 0.85rem;
+      line-height: 2.1;
+      color: var(--text-mid);
+    }
+
+    .policy-highlight {
+      background: var(--soft-pink);
+      border-left: 2px solid var(--rose-gold);
+      padding: 24px 28px;
+    }
+    .policy-highlight p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      font-style: italic;
+      line-height: 1.7;
+      color: var(--text-dark);
+    }
+
+    .policy-items {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .policy-item {
+      display: grid;
+      grid-template-columns: 20px 1fr;
+      gap: 16px;
+      padding: 18px 0;
+      border-bottom: 1px solid var(--divider);
+    }
+    .policy-item:last-child { border-bottom: none; }
+
+    .policy-item-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rose-gold);
+      margin-top: 8px;
+      flex-shrink: 0;
+    }
+
+    .policy-item-text {
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: var(--text-mid);
+    }
+    .policy-item-text strong {
+      font-weight: 400;
+      color: var(--text-dark);
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    /* Cards de contato */
+    .contact-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .contact-card {
+      border: 1px solid var(--divider);
+      padding: 28px 24px;
+      background: var(--white);
+      transition: all 0.35s ease;
+      text-decoration: none;
+      display: block;
+    }
+    .contact-card:hover {
+      border-color: var(--rose-gold);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(200,149,108,0.1);
+    }
+
+    .contact-card-icon {
+      width: 36px; height: 36px;
+      margin-bottom: 16px;
+    }
+
+    .contact-card-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 6px;
+    }
+    .contact-card-value {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-dark);
+    }
+
+    /* Prazo badges */
+    .prazo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .prazo-card {
+      border: 1px solid var(--divider);
+      padding: 28px;
+      background: var(--white);
+      position: relative;
+      overflow: hidden;
+    }
+    .prazo-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--rose-gold);
+      opacity: 0.4;
+    }
+
+    .prazo-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: var(--rose-gold);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .prazo-unit {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      display: block;
+      margin-bottom: 12px;
+    }
+    .prazo-desc {
+      font-size: 0.78rem;
+      line-height: 1.7;
+      color: var(--text-mid);
+    }
+
+    /* ── COMPROMISSO BANNER ── */
+    .compromisso-banner {
+      background: var(--text-dark);
+      padding: 80px 60px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+    }
+
+    .compromisso-left p:first-child {
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-bottom: 20px;
+    }
+
+    .compromisso-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300;
+      line-height: 1.2;
+      color: white;
+    }
+    .compromisso-title em { font-style: italic; color: var(--blush); }
+
+    .compromisso-right {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .compromisso-item {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+      padding-bottom: 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .compromisso-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .compromisso-icon {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+
+    .compromisso-item-title {
+      font-size: 0.68rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-bottom: 6px;
+    }
+    .compromisso-item-text {
+      font-size: 0.8rem;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.45);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--text-dark);
+      padding: 80px 60px 40px;
+      color: rgba(255,255,255,0.5);
+      border-top: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px; margin-bottom: 60px;
+    }
+
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 1.8rem;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .footer-brand span { color: var(--blush); }
+
+    .footer-desc {
+      font-size: 0.78rem; line-height: 1.9;
+      color: rgba(255,255,255,0.4);
+      max-width: 280px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.6rem;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--blush);
+      margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a {
+      font-size: 0.78rem;
+      color: rgba(255,255,255,0.45);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .footer-col ul a:hover { color: var(--blush); }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding-top: 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.72rem; color: rgba(255,255,255,0.25); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .mobile-menu { display: flex; }
+
+      .hero-inner { padding: 60px 24px 40px; }
+
+      .indice-section { flex-direction: column; gap: 24px; padding: 48px 24px; }
+      .indice-grid { grid-template-columns: 1fr 1fr; }
+      .indice-item:nth-last-child(-n+3) { border-bottom: 1px solid var(--divider); }
+      .indice-item:last-child { border-bottom: none; }
+
+      .content-wrap { padding: 0 24px; }
+
+      .policy-section { padding: 64px 0; }
+      .policy-layout { grid-template-columns: 1fr; gap: 32px; }
+      .policy-sidebar { position: static; }
+      .policy-num { font-size: 2.8rem; }
+
+      .contact-cards { grid-template-columns: 1fr; }
+      .prazo-grid { grid-template-columns: 1fr; }
+
+      .compromisso-banner { grid-template-columns: 1fr; gap: 48px; padding: 60px 24px; }
+
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+      footer { padding: 60px 24px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Candy<span>Care</span></a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="#">Política de Atendimento</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#" onclick="closeMenu()">Home</a>
+  <a href="#" onclick="closeMenu()">Atendimento</a>
+</div>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="hero-inner">
+    <p class="hero-eyebrow">CandyCare — Relacionamento</p>
+    <h1 class="hero-title">Política de<br><em>Atendimento</em></h1>
+    <p class="hero-sub">
+      Transparência e cuidado em cada interação. Aqui você encontra tudo sobre como nos relacionamos com você — do pedido à entrega, da dúvida à solução.
+    </p>
+    <div class="hero-deco-line"></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Atendimento com cuidado</span>
+    <span class="marquee-item">Transparência sempre</span>
+    <span class="marquee-item">Seu bem-estar em primeiro lugar</span>
+    <span class="marquee-item">Doces sem açúcar</span>
+    <span class="marquee-item">Respostas em até 24h</span>
+    <span class="marquee-item">Feito com Isomalte</span>
+    <span class="marquee-item">Atendimento com cuidado</span>
+    <span class="marquee-item">Transparência sempre</span>
+    <span class="marquee-item">Seu bem-estar em primeiro lugar</span>
+    <span class="marquee-item">Doces sem açúcar</span>
+    <span class="marquee-item">Respostas em até 24h</span>
+    <span class="marquee-item">Feito com Isomalte</span>
+  </div>
+</div>
+
+<!-- ÍNDICE -->
+<div class="indice-section reveal">
+  <p class="indice-label">Índice</p>
+  <div class="indice-grid">
+    <a href="#canais" class="indice-item">
+      <span class="indice-num">01</span>
+      <span class="indice-name">Canais de Atendimento</span>
+    </a>
+    <a href="#horarios" class="indice-item">
+      <span class="indice-num">02</span>
+      <span class="indice-name">Horários de Funcionamento</span>
+    </a>
+    <a href="#prazos" class="indice-item">
+      <span class="indice-num">03</span>
+      <span class="indice-name">Prazos de Resposta</span>
+    </a>
+    <a href="#pedidos" class="indice-item">
+      <span class="indice-num">04</span>
+      <span class="indice-name">Pedidos e Entregas</span>
+    </a>
+    <a href="#trocas" class="indice-item">
+      <span class="indice-num">05</span>
+      <span class="indice-name">Trocas e Devoluções</span>
+    </a>
+    <a href="#privacidade" class="indice-item">
+      <span class="indice-num">06</span>
+      <span class="indice-name">Privacidade dos Dados</span>
+    </a>
+  </div>
+</div>
+
+<!-- CONTEÚDO -->
+<div class="content-wrap">
+
+  <!-- 01 CANAIS -->
+  <section class="policy-section reveal" id="canais">
+    <div class="policy-layout">
+      <div class="policy-sidebar">
+        <div class="policy-num">01</div>
+        <p class="policy-eyebrow">Onde nos encontrar</p>
+        <h2 class="policy-title">Canais de<br><em>Atendimento</em></h2>
+        <div class="deco-line"></div>
+      </div>
+      <div class="policy-body">
+        <p class="policy-text">
+          A CandyCare acredita que um bom atendimento começa com acessibilidade. Por isso, estamos presentes nos canais que fazem parte do seu dia a dia — escolha o que for mais confortável para você.
+        </p>
+        <div class="contact-cards">
+          <a href="https://www.instagram.com/candyzcare" target="_blank" class="contact-card">
+            <svg class="contact-card-icon" viewBox="0 0 36 36" fill="none">
+              <rect x="6" y="6" width="24" height="24" rx="7" stroke="#c8956c" stroke-width="1"/>
+              <circle cx="18" cy="18" r="6" stroke="#c8956c" stroke-width="1"/>
+              <circle cx="26" cy="10" r="1.5" fill="#c8956c"/>
+            </svg>
+            <p class="contact-card-label">Instagram</p>
+            <p class="contact-card-value">@candycare</p>
+          </a>
+          <a href="#" class="contact-card">
+            <svg class="contact-card-icon" viewBox="0 0 36 36" fill="none">
+              <path d="M18 6C11.373 6 6 11.163 6 17.527c0 2.18.613 4.221 1.68 5.963L6 30l6.72-1.633A12.17 12.17 0 0018 29.053c6.627 0 12-5.163 12-11.526C30 11.163 24.627 6 18 6Z" stroke="#c8956c" stroke-width="1"/>
+              <path d="M13.5 15.5c0-.5.4-.9.9-.9h.2c.4 0 .8.3.9.7l.8 2.4c.1.3 0 .6-.2.8l-.6.6c.8 1.5 2 2.7 3.5 3.5l.6-.6c.2-.2.5-.3.8-.2l2.4.8c.4.1.7.5.7.9v.2c0 .5-.4.9-.9.9C16.9 24.5 13.5 21.1 13.5 15.5Z" stroke="#c8956c" stroke-width="1"/>
+            </svg>
+            <p class="contact-card-label">WhatsApp</p>
+            <p class="contact-card-value">Fale conosco</p>
+          </a>
+          <a href="mailto:contato@candycare.com.br" class="contact-card">
+            <svg class="contact-card-icon" viewBox="0 0 36 36" fill="none">
+              <rect x="6" y="10" width="24" height="16" rx="2" stroke="#c8956c" stroke-width="1"/>
+              <path d="M6 12l12 8 12-8" stroke="#c8956c" stroke-width="1"/>
+            </svg>
+            <p class="contact-card-label">E-mail</p>
+            <p class="contact-card-value">contato@candycare.com.br</p>
+          </a>
+        </div>
+        <div class="policy-highlight">
+          <p>
+            "Cada mensagem que recebemos é uma oportunidade de cuidar ainda mais de quem confia na CandyCare. Tratamos cada contato com a mesma atenção que colocamos em cada doce."
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 HORÁRIOS -->
+  <section class="policy-section reveal" id="horarios">
+    <div class="policy-layout">
+      <div class="policy-sidebar">
+        <div class="policy-num">02</div>
+        <p class="policy-eyebrow">Quando estamos aqui</p>
+        <h2 class="policy-title">Horários de<br><em>Funcionamento</em></h2>
+        <div class="deco-line"></div>
+      </div>
+      <div class="policy-body">
+        <p class="policy-text">
+          Nossa equipe está disponível nos horários abaixo para garantir que nenhuma dúvida fique sem resposta. Mensagens recebidas fora do horário comercial serão respondidas no próximo dia útil.
+        </p>
+        <div class="policy-items">
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Segunda a Sexta-feira</strong>
+              Das 9h às 18h — atendimento completo por WhatsApp, Instagram e e-mail.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Sábados</strong>
+              Das 10h às 14h — atendimento via WhatsApp e Instagram para dúvidas urgentes sobre pedidos.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Domingos e Feriados</strong>
+              Sem atendimento. Retornaremos no próximo dia útil com prioridade para mensagens recebidas nesses dias.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Recesso de Fim de Ano</strong>
+              Entre 23 de dezembro e 2 de janeiro o atendimento é reduzido. Comunicaremos previamente pelo Instagram.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 PRAZOS -->
+  <section class="policy-section reveal" id="prazos">
+    <div class="policy-layout">
+      <div class="policy-sidebar">
+        <div class="policy-num">03</div>
+        <p class="policy-eyebrow">Nosso compromisso</p>
+        <h2 class="policy-title">Prazos de<br><em>Resposta</em></h2>
+        <div class="deco-line"></div>
+      </div>
+      <div class="policy-body">
+        <p class="policy-text">
+          Valorizamos o seu tempo. Por isso nos comprometemos com prazos claros e realistas — e trabalhamos todos os dias para superá-los.
+        </p>
+        <div class="prazo-grid">
+          <div class="prazo-card">
+            <div class="prazo-num">2h</div>
+            <span class="prazo-unit">Em dias úteis</span>
+            <p class="prazo-desc">Tempo médio de primeira resposta via WhatsApp e Instagram durante o horário comercial.</p>
+          </div>
+          <div class="prazo-card">
+            <div class="prazo-num">24h</div>
+            <span class="prazo-unit">Dias úteis</span>
+            <p class="prazo-desc">Prazo máximo de resposta para e-mails e mensagens recebidas fora do horário comercial.</p>
+          </div>
+          <div class="prazo-card">
+            <div class="prazo-num">48h</div>
+            <span class="prazo-unit">Para resolução</span>
+            <p class="prazo-desc">Tempo para resolução de solicitações simples como dúvidas sobre produtos, composição e disponibilidade.</p>
+          </div>
+          <div class="prazo-card">
+            <div class="prazo-num">5</div>
+            <span class="prazo-unit">Dias úteis</span>
+            <p class="prazo-desc">Prazo para análise e resposta definitiva de reclamações, trocas e situações que exigem avaliação interna.</p>
+          </div>
+        </div>
+        <div class="policy-highlight">
+          <p>
+            Caso não receba retorno dentro dos prazos indicados, por favor reenvie sua mensagem. Erros acontecem — o importante é que nenhum cliente fique sem atenção.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 PEDIDOS -->
+  <section class="policy-section reveal" id="pedidos">
+    <div class="policy-layout">
+      <div class="policy-sidebar">
+        <div class="policy-num">04</div>
+        <p class="policy-eyebrow">Do carrinho à porta</p>
+        <h2 class="policy-title">Pedidos e<br><em>Entregas</em></h2>
+        <div class="deco-line"></div>
+      </div>
+      <div class="policy-body">
+        <p class="policy-text">
+          Cuidamos de cada pedido como se fosse único — porque para nós, é. Do preparo à embalagem, cada detalhe é pensado para que os produtos cheguem até você em perfeitas condições.
+        </p>
+        <div class="policy-items">
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Confirmação de Pedido</strong>
+              Após a compra, você receberá uma confirmação por WhatsApp ou e-mail com os detalhes do pedido em até 2 horas.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Prazo de Produção</strong>
+              Nossos produtos são artesanais e feitos sob demanda. O prazo de produção é de 3 a 5 dias úteis após a confirmação do pagamento.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Envio e Rastreamento</strong>
+              Após o despacho, você receberá o código de rastreamento. O prazo de entrega varia conforme a modalidade de frete escolhida e a sua localidade.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Embalagem Especial</strong>
+              Todos os produtos são embalados com cuidado especial para garantir integridade durante o transporte, sem comprometer a apresentação premium da CandyCare.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Entrega não Realizada</strong>
+              Em caso de tentativas de entrega sem sucesso, o produto retorna ao remetente. Nesse caso, entraremos em contato para reagendar o envio — custos adicionais podem ser aplicados.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 TROCAS -->
+  <section class="policy-section reveal" id="trocas">
+    <div class="policy-layout">
+      <div class="policy-sidebar">
+        <div class="policy-num">05</div>
+        <p class="policy-eyebrow">Sua satisfação importa</p>
+        <h2 class="policy-title">Trocas e<br><em>Devoluções</em></h2>
+        <div class="deco-line"></div>
+      </div>
+      <div class="policy-body">
+        <p class="policy-text">
+          A sua satisfação é a nossa prioridade. Se algo não estiver de acordo com o esperado, estamos aqui para resolver da forma mais simples e humana possível.
+        </p>
+        <div class="policy-highlight">
+          <p>
+            Por se tratarem de produtos alimentícios artesanais, não realizamos trocas ou devoluções por arrependimento. No entanto, qualquer problema com a qualidade ou integridade do produto será resolvido sem burocracia.
+          </p>
+        </div>
+        <div class="policy-items">
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Produto com Defeito ou Avariado</strong>
+              Entre em contato em até 48 horas após o recebimento, enviando fotos do produto e da embalagem. Analisaremos o caso e providenciaremos o reenvio sem custo adicional.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Produto Incorreto</strong>
+              Se você recebeu um produto diferente do pedido, nos avise imediatamente. Corrigiremos o erro com envio prioritário do produto correto.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Pedido Extraviado</strong>
+              Em casos de extravio confirmado pela transportadora, realizaremos o reenvio completo do pedido sem custo para você.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Reembolso</strong>
+              Em situações em que o reenvio não for viável, o reembolso será processado em até 10 dias úteis pela forma de pagamento original.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 PRIVACIDADE -->
+  <section class="policy-section reveal" id="privacidade">
+    <div class="policy-layout">
+      <div class="policy-sidebar">
+        <div class="policy-num">06</div>
+        <p class="policy-eyebrow">Seus dados, nossa responsabilidade</p>
+        <h2 class="policy-title">Privacidade<br><em>dos Dados</em></h2>
+        <div class="deco-line"></div>
+      </div>
+      <div class="policy-body">
+        <p class="policy-text">
+          A CandyCare respeita profundamente a privacidade de cada cliente. Coletamos apenas as informações necessárias para processar seus pedidos e melhorar sua experiência conosco, em total conformidade com a LGPD.
+        </p>
+        <div class="policy-items">
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Dados Coletados</strong>
+              Nome, e-mail, telefone e endereço para processamento de pedidos e entrega. Nunca solicitamos informações além do estritamente necessário.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Uso das Informações</strong>
+              Seus dados são utilizados exclusivamente para: confirmação de pedidos, envio de atualizações sobre entregas e comunicações sobre produtos CandyCare.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Compartilhamento</strong>
+              Não vendemos, alugamos ou compartilhamos seus dados com terceiros, exceto parceiros de entrega e meios de pagamento — e apenas na medida necessária para concluir seu pedido.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Seus Direitos (LGPD)</strong>
+              Você pode solicitar acesso, correção ou exclusão dos seus dados a qualquer momento, entrando em contato pelo e-mail contato@candycare.com.br.
+            </div>
+          </div>
+          <div class="policy-item">
+            <div class="policy-item-dot"></div>
+            <div class="policy-item-text">
+              <strong>Comunicações de Marketing</strong>
+              Qualquer comunicação de novidades e promoções é enviada apenas com o seu consentimento, e você pode cancelar a inscrição a qualquer momento.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- COMPROMISSO BANNER -->
+<div class="compromisso-banner reveal">
+  <div class="compromisso-left">
+    <p>Nosso compromisso</p>
+    <h2 class="compromisso-title">Cuidar vai além<br>do <em>produto</em></h2>
+  </div>
+  <div class="compromisso-right">
+    <div class="compromisso-item">
+      <svg class="compromisso-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="16" stroke="#f2c4c4" stroke-width="0.8"/>
+        <path d="M14 20 C14 16 20 12 20 16 C20 12 26 16 26 20 C26 24 20 28 20 28 C20 28 14 24 14 20Z" stroke="#f2c4c4" stroke-width="1" fill="none"/>
+      </svg>
+      <div>
+        <p class="compromisso-item-title">Empatia em cada contato</p>
+        <p class="compromisso-item-text">Tratamos cada cliente como gostaríamos de ser tratados — com atenção, respeito e sem scripts robotizados.</p>
+      </div>
+    </div>
+    <div class="compromisso-item">
+      <svg class="compromisso-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="16" stroke="#f2c4c4" stroke-width="0.8"/>
+        <path d="M13 20l5 5 9-9" stroke="#f2c4c4" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <p class="compromisso-item-title">Transparência total</p>
+        <p class="compromisso-item-text">Comunicamos atrasos, problemas e novidades sem enrolação. Você sempre saberá o que está acontecendo com seu pedido.</p>
+      </div>
+    </div>
+    <div class="compromisso-item">
+      <svg class="compromisso-icon" viewBox="0 0 40 40" fill="none">
+        <circle cx="20" cy="20" r="16" stroke="#f2c4c4" stroke-width="0.8"/>
+        <path d="M20 12v8l5 3" stroke="#f2c4c4" stroke-width="1" stroke-linecap="round"/>
+      </svg>
+      <div>
+        <p class="compromisso-item-title">Respeito ao seu tempo</p>
+        <p class="compromisso-item-text">Prazos claros, respostas ágeis e soluções sem burocracia. Porque a sua confiança é construída a cada interação.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand">Candy<span>Care</span></p>
+      <p class="footer-desc">Sabor que cuida. Doces premium sem açúcar, desenvolvidos com Isomalte para quem merece o melhor.</p>
+    </div>
+    
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="mailto:contato@candycare.com.br">contato@candycare.com.br</a></li>
+        <li><a href="https://www.instagram.com/candyzcare">@candycare</a></li>
+        <li><a href="#">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CandyCare. Todos os direitos reservados.</p>
+    <p>Feito com ✦ e muito Isomalte</p>
+  </div>
+</footer>
+
+<script>
+  // Cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 4}px, ${my - 4}px)`;
+    });
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx - 14}px, ${ry - 14}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+  }
+
+  // Mobile menu
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  function closeMenu() {
+    navToggle.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
+  }, { threshold: 0.06 });
+
+  reveals.forEach(r => obs.observe(r));
+</script>
+</body>
+</html>
