@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="icon" href="icon/icon_candycare 4.0.png" type="image/png">
+  <link rel="icon" href="icon/icon_candycare 4.0.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Central de Reclamações — CandyCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+:root{--blush:#f2c4c4;--nude:#e8b4b0;--rose-gold:#c8956c;--pale:#fdf5f3;--white:#ffffff;--soft-pink:#f9e8e6;--text-dark:#2a1f1e;--text-mid:#7a5c58;--text-light:#b89490;--divider:rgba(200,149,108,0.2);--dark:#1e1514;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:'Jost',sans-serif;background:var(--pale);color:var(--text-dark);font-weight:300;overflow-x:hidden;}
+@media(pointer:fine){*{cursor:none;}}
+#cursor,#cursor-ring{display:none;}
+@media(pointer:fine){
+  #cursor{display:block;width:8px;height:8px;background:var(--rose-gold);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9999;transition:transform 0.15s ease;}
+  #cursor-ring{display:block;width:28px;height:28px;border:1px solid var(--blush);border-radius:50%;position:fixed;top:0;left:0;pointer-events:none;z-index:9998;transition:transform 0.4s ease;}
+}
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:20px 60px;display:flex;align-items:center;justify-content:space-between;background:rgba(253,245,243,0.96);backdrop-filter:blur(12px);border-bottom:1px solid var(--divider);}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.6rem;letter-spacing:0.12em;color:var(--text-dark);text-decoration:none;}
+.nav-logo span{color:var(--rose-gold);}
+.nav-links{display:flex;gap:36px;list-style:none;}
+.nav-links a{font-weight:200;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-mid);text-decoration:none;transition:color 0.3s;}
+.nav-links a:hover{color:var(--rose-gold);}
+.nav-toggle{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:300;}
+.nav-toggle span{display:block;width:24px;height:1px;background:var(--text-dark);transition:all 0.3s;transform-origin:center;}
+.nav-toggle.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-toggle.open span:nth-child(2){opacity:0;}
+.nav-toggle.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(253,245,243,0.98);backdrop-filter:blur(16px);z-index:250;flex-direction:column;align-items:center;justify-content:center;gap:40px;opacity:0;pointer-events:none;transition:opacity 0.3s;}
+.mobile-menu.open{opacity:1;pointer-events:all;}
+.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--text-dark);text-decoration:none;letter-spacing:0.1em;transition:color 0.3s;}
+.mobile-menu a:hover{color:var(--rose-gold);}
+
+/* HERO */
+.hero{padding-top:80px;min-height:100vh;display:grid;grid-template-columns:55% 45%;background:var(--dark);overflow:hidden;}
+.hero-left{padding:100px 60px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2;}
+.hero-kicker{display:flex;align-items:center;gap:14px;margin-bottom:32px;opacity:0;animation:fadeUp 0.7s 0.2s forwards;}
+.hero-kicker-line{width:32px;height:1px;background:var(--rose-gold);}
+.hero-kicker p{font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--rose-gold);}
+.hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,5.5vw,5.2rem);font-weight:300;line-height:1.06;color:var(--white);margin-bottom:32px;opacity:0;animation:fadeUp 0.8s 0.35s forwards;}
+.hero-title em{font-style:italic;color:var(--blush);display:block;}
+.hero-sub{font-size:0.88rem;line-height:2;color:rgba(255,255,255,0.45);max-width:440px;margin-bottom:52px;opacity:0;animation:fadeUp 0.8s 0.55s forwards;}
+.hero-cta-row{display:flex;gap:16px;flex-wrap:wrap;opacity:0;animation:fadeUp 0.8s 0.75s forwards;}
+.btn-hero-primary{display:inline-flex;align-items:center;gap:12px;padding:15px 32px;background:var(--rose-gold);border:1px solid var(--rose-gold);color:white;font-family:'Jost',sans-serif;font-weight:300;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;cursor:pointer;}
+.btn-hero-primary:hover{background:#b8844d;gap:18px;}
+.btn-hero-primary svg{width:14px;}
+.btn-hero-ghost{display:inline-flex;align-items:center;gap:12px;padding:15px 32px;background:none;border:1px solid rgba(255,255,255,0.18);color:rgba(255,255,255,0.55);font-family:'Jost',sans-serif;font-weight:300;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;cursor:pointer;}
+.btn-hero-ghost:hover{border-color:var(--blush);color:var(--blush);}
+.hero-badge-row{display:flex;gap:32px;margin-top:60px;padding-top:40px;border-top:1px solid rgba(255,255,255,0.06);opacity:0;animation:fadeIn 1s 1s forwards;}
+.hero-badge-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--rose-gold);line-height:1;}
+.hero-badge-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(255,255,255,0.25);margin-top:5px;}
+.hero-right{position:relative;overflow:hidden;background:#251917;border-left:1px solid rgba(255,255,255,0.04);}
+.hero-right-inner{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:60px;opacity:0;animation:fadeIn 1.2s 0.5s forwards;}
+.complaint-preview{display:flex;flex-direction:column;gap:0;width:100%;max-width:340px;}
+.cp-header{padding:20px 24px;border:1px solid rgba(200,149,108,0.3);background:rgba(200,149,108,0.05);}
+.cp-header p:first-child{font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rose-gold);margin-bottom:6px;}
+.cp-header p:last-child{font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:300;color:white;}
+.cp-item{display:flex;align-items:center;gap:14px;padding:14px 24px;border:1px solid rgba(255,255,255,0.04);border-top:none;transition:background 0.3s;}
+.cp-item:hover{background:rgba(255,255,255,0.03);}
+.cp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.cp-dot.aberto{background:#e8b4b0;}
+.cp-dot.andamento{background:var(--rose-gold);}
+.cp-dot.resolvido{background:#90b49c;}
+.cp-item-text{flex:1;font-size:0.72rem;color:rgba(255,255,255,0.35);line-height:1.5;}
+.cp-item-status{font-size:0.55rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.18);}
+.cp-footer{padding:16px 24px;border:1px solid rgba(200,149,108,0.2);border-top:none;background:rgba(200,149,108,0.08);display:flex;justify-content:space-between;align-items:center;}
+.cp-footer p{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-gold);}
+.hero-orb{position:absolute;bottom:-120px;right:-120px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(200,149,108,0.06) 0%,transparent 70%);pointer-events:none;}
+
+/* MARQUEE */
+.marquee-wrap{background:var(--rose-gold);padding:14px 0;overflow:hidden;white-space:nowrap;}
+.marquee-track{display:inline-block;animation:marquee 22s linear infinite;}
+.marquee-item{display:inline-block;font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:white;padding:0 32px;}
+.marquee-item::after{content:'✦';margin-left:32px;opacity:0.6;}
+
+/* SHARED */
+.section-eyebrow{font-size:0.62rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--rose-gold);margin-bottom:18px;}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,3.5vw,3.2rem);font-weight:300;line-height:1.2;color:var(--text-dark);margin-bottom:24px;}
+.section-title em{font-style:italic;color:var(--rose-gold);}
+.section-body{font-size:0.85rem;line-height:2.05;color:var(--text-mid);margin-bottom:18px;}
+.deco-line{width:40px;height:1px;background:var(--rose-gold);margin-bottom:28px;opacity:0.6;}
+
+/* TIPOS */
+#tipos{padding:120px 60px;background:var(--white);}
+.tipos-inner{max-width:1100px;margin:0 auto;}
+.tipos-top{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:72px;align-items:end;}
+.tipos-top-right{font-size:0.82rem;line-height:2.1;color:var(--text-mid);}
+.tipos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--divider);border:1px solid var(--divider);}
+.tipo-card{background:var(--pale);padding:40px 32px;position:relative;overflow:hidden;transition:background 0.4s,transform 0.4s;cursor:default;}
+.tipo-card:hover{background:var(--soft-pink);}
+.tipo-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--rose-gold);transform:scaleX(0);transform-origin:left;transition:transform 0.4s ease;}
+.tipo-card:hover::after{transform:scaleX(1);}
+.tipo-icon{width:48px;height:48px;margin-bottom:24px;border:1px solid var(--divider);display:flex;align-items:center;justify-content:center;transition:border-color 0.4s,background 0.4s;}
+.tipo-card:hover .tipo-icon{border-color:var(--rose-gold);background:white;}
+.tipo-icon svg{width:22px;stroke:var(--rose-gold);fill:none;stroke-width:1.3;}
+.tipo-tag{font-size:0.58rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;}
+.tipo-title{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:400;color:var(--text-dark);margin-bottom:10px;}
+.tipo-body{font-size:0.78rem;line-height:1.85;color:var(--text-mid);}
+.tipo-prazo{display:inline-flex;align-items:center;gap:6px;margin-top:20px;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--rose-gold);border:1px solid var(--divider);padding:5px 12px;}
+.tipo-prazo svg{width:10px;stroke:var(--rose-gold);fill:none;stroke-width:1.5;}
+
+/* PROCEDIMENTOS */
+#procedimentos{padding:120px 60px;background:var(--soft-pink);}
+.proc-inner{max-width:1100px;margin:0 auto;}
+.proc-layout{display:grid;grid-template-columns:360px 1fr;gap:80px;align-items:start;}
+.proc-sidebar{position:sticky;top:120px;}
+.accordion{margin-top:16px;}
+.acc-item{border-bottom:1px solid var(--divider);overflow:hidden;}
+.acc-item:first-child{border-top:1px solid var(--divider);}
+.acc-trigger{width:100%;background:none;border:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;padding:24px 0;text-align:left;transition:background 0.2s;}
+.acc-trigger:hover{background:rgba(200,149,108,0.04);}
+.acc-trigger-left{display:flex;align-items:center;gap:16px;}
+.acc-step-num{font-family:'Cormorant Garamond',serif;font-size:1rem;font-style:italic;color:var(--text-light);flex-shrink:0;width:24px;}
+.acc-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:400;color:var(--text-dark);}
+.acc-chevron{width:16px;height:16px;flex-shrink:0;stroke:var(--text-light);fill:none;stroke-width:1.5;transition:transform 0.35s ease;}
+.acc-item.open .acc-chevron{transform:rotate(180deg);stroke:var(--rose-gold);}
+.acc-item.open .acc-title{color:var(--rose-gold);}
+.acc-body{max-height:0;overflow:hidden;transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1);}
+.acc-body-inner{padding:0 0 28px 40px;display:flex;flex-direction:column;gap:14px;}
+.acc-body p{font-size:0.82rem;line-height:1.95;color:var(--text-mid);}
+.acc-note{display:flex;gap:12px;align-items:flex-start;background:var(--white);border-left:2px solid var(--rose-gold);padding:14px 18px;margin-top:4px;}
+.acc-note svg{width:14px;stroke:var(--rose-gold);fill:none;stroke-width:1.5;flex-shrink:0;margin-top:2px;}
+.acc-note p{font-size:0.76rem;line-height:1.75;color:var(--text-mid);}
+.acc-checklist{display:flex;flex-direction:column;gap:8px;}
+.acc-check-row{display:flex;align-items:flex-start;gap:10px;font-size:0.78rem;line-height:1.7;color:var(--text-mid);}
+.acc-check-dot{width:5px;height:5px;border-radius:50%;background:var(--rose-gold);flex-shrink:0;margin-top:8px;}
+
+/* PRAZOS TABLE */
+#prazos{padding:120px 60px;background:var(--white);}
+.prazos-inner{max-width:1100px;margin:0 auto;}
+.prazos-header{margin-bottom:56px;}
+.prazos-table{width:100%;border-collapse:collapse;border:1px solid var(--divider);}
+.prazos-table thead tr{background:var(--text-dark);}
+.prazos-table thead th{padding:20px 24px;font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:rgba(255,255,255,0.4);font-weight:300;text-align:left;white-space:nowrap;}
+.prazos-table thead th:first-child{color:var(--blush);}
+.prazos-table tbody tr{border-bottom:1px solid var(--divider);transition:background 0.3s;}
+.prazos-table tbody tr:hover{background:var(--soft-pink);}
+.prazos-table tbody tr:last-child{border-bottom:none;}
+.prazos-table tbody td{padding:22px 24px;font-size:0.8rem;line-height:1.6;color:var(--text-mid);vertical-align:middle;}
+.td-tipo{font-family:'Cormorant Garamond',serif;font-size:1rem!important;font-weight:400;color:var(--text-dark)!important;}
+.td-prazo{font-family:'Cormorant Garamond',serif;font-size:1.3rem!important;color:var(--rose-gold)!important;font-weight:300;white-space:nowrap;}
+.td-badge{display:inline-block;padding:4px 12px;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;border:1px solid var(--divider);color:var(--text-light);}
+.td-badge.priority{border-color:var(--rose-gold);color:var(--rose-gold);}
+
+/* COMO ABRIR */
+#como-abrir{padding:0;background:var(--text-dark);overflow:hidden;}
+.como-inner{display:grid;grid-template-columns:320px 1fr;}
+.como-left{padding:100px 60px;border-right:1px solid rgba(255,255,255,0.05);display:flex;flex-direction:column;justify-content:center;}
+.como-left .section-eyebrow{color:var(--blush);}
+.como-left .section-title{color:white;}
+.como-left .section-title em{color:var(--blush);}
+.como-left .section-body{color:rgba(255,255,255,0.4);}
+.como-left .deco-line{background:var(--blush);}
+.como-right{padding:100px 60px;display:flex;flex-direction:column;gap:0;}
+.como-step{display:grid;grid-template-columns:64px 1fr;gap:24px;align-items:start;padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.05);transition:background 0.3s,padding 0.3s;}
+.como-step:last-child{border-bottom:none;}
+.como-step:hover{background:rgba(255,255,255,0.02);padding-left:8px;padding-right:8px;margin:0 -8px;}
+.como-step-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;font-style:italic;color:rgba(200,149,108,0.3);line-height:1;padding-top:4px;transition:color 0.3s;}
+.como-step:hover .como-step-num{color:var(--rose-gold);}
+.como-step-title{font-size:0.66rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--blush);margin-bottom:6px;}
+.como-step-body{font-size:0.8rem;line-height:1.85;color:rgba(255,255,255,0.38);}
+.como-step-tag{display:inline-block;margin-top:10px;font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:rgba(200,149,108,0.5);border:1px solid rgba(200,149,108,0.2);padding:4px 10px;}
+
+/* DIREITOS */
+#direitos{padding:120px 60px;background:var(--pale);}
+.direitos-inner{max-width:1100px;margin:0 auto;}
+.direitos-top{display:grid;grid-template-columns:1fr 1fr;gap:80px;margin-bottom:72px;align-items:end;}
+.direitos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;background:var(--divider);border:1px solid var(--divider);}
+.direito-card{background:var(--white);padding:44px 40px;display:flex;gap:24px;align-items:flex-start;transition:background 0.4s;}
+.direito-card:hover{background:var(--soft-pink);}
+.direito-letter{font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:300;font-style:italic;color:var(--blush);line-height:1;flex-shrink:0;width:44px;transition:color 0.4s;}
+.direito-card:hover .direito-letter{color:var(--rose-gold);}
+.direito-tag{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-light);margin-bottom:6px;}
+.direito-title{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-weight:400;color:var(--text-dark);margin-bottom:8px;}
+.direito-body{font-size:0.78rem;line-height:1.85;color:var(--text-mid);}
+
+/* FORMULARIO */
+#formulario{padding:0;background:var(--soft-pink);}
+.form-inner{display:grid;grid-template-columns:1fr 1fr;}
+.form-left{padding:100px 60px;display:flex;flex-direction:column;justify-content:center;border-right:1px solid var(--divider);}
+.form-right{padding:100px 60px;background:var(--white);}
+.form-group{margin-bottom:24px;}
+.form-label{display:block;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;}
+.form-input,.form-select,.form-textarea{width:100%;padding:14px 16px;background:var(--pale);border:1px solid var(--divider);font-family:'Jost',sans-serif;font-weight:300;font-size:0.82rem;color:var(--text-dark);outline:none;transition:border-color 0.3s,background 0.3s;appearance:none;}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--rose-gold);background:white;}
+.form-input::placeholder,.form-textarea::placeholder{color:var(--text-light);}
+.form-textarea{resize:vertical;min-height:120px;}
+.form-select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23b89490' stroke-width='1.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;padding-right:36px;cursor:pointer;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.btn-submit{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:16px;background:var(--rose-gold);border:none;color:white;font-family:'Jost',sans-serif;font-weight:300;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;cursor:pointer;transition:background 0.3s,gap 0.3s;margin-top:8px;}
+.btn-submit:hover{background:#b8844d;gap:16px;}
+.btn-submit svg{width:14px;}
+.form-note{font-size:0.7rem;line-height:1.7;color:var(--text-light);margin-top:14px;text-align:center;}
+.form-success{display:none;text-align:center;padding:60px 40px;flex-direction:column;align-items:center;gap:20px;}
+.form-success.show{display:flex;}
+.form-container.submitted .form-fields{display:none;}
+.form-container.submitted .form-success{display:flex;}
+.success-icon{width:56px;height:56px;border:1px solid var(--rose-gold);display:flex;align-items:center;justify-content:center;margin:0 auto;}
+.success-icon svg{width:22px;stroke:var(--rose-gold);fill:none;stroke-width:1.5;}
+.success-title{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--text-dark);}
+.success-body{font-size:0.8rem;line-height:1.85;color:var(--text-mid);max-width:320px;}
+
+/* BANNER FINAL */
+.final-banner{background:var(--rose-gold);padding:80px 60px;display:flex;align-items:center;justify-content:space-between;gap:40px;}
+.final-banner-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,3vw,2.8rem);font-weight:300;color:white;line-height:1.2;}
+.final-banner-title em{font-style:italic;opacity:0.75;display:block;}
+.final-banner-desc{font-size:0.8rem;line-height:1.85;color:rgba(255,255,255,0.65);max-width:400px;margin-top:12px;}
+.final-banner-links{display:flex;gap:14px;flex-shrink:0;}
+.btn-final-solid{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:white;border:1px solid white;color:var(--rose-gold);font-family:'Jost',sans-serif;font-weight:300;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;}
+.btn-final-solid:hover{background:var(--pale);}
+.btn-final-outline{display:inline-flex;align-items:center;gap:10px;padding:14px 28px;background:none;border:1px solid rgba(255,255,255,0.35);color:rgba(255,255,255,0.65);font-family:'Jost',sans-serif;font-weight:300;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;transition:all 0.3s;}
+.btn-final-outline:hover{border-color:white;color:white;}
+
+/* FOOTER */
+footer{background:var(--dark);padding:80px 60px 40px;}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:60px;margin-bottom:60px;}
+.footer-brand{font-family:'Cormorant Garamond',serif;font-weight:300;font-size:1.8rem;color:white;margin-bottom:16px;}
+.footer-brand span{color:var(--blush);}
+.footer-desc{font-size:0.78rem;line-height:1.9;color:rgba(255,255,255,0.35);max-width:280px;}
+.footer-col h4{font-size:0.6rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--blush);margin-bottom:20px;}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.footer-col ul a{font-size:0.78rem;color:rgba(255,255,255,0.35);text-decoration:none;transition:color 0.3s;}
+.footer-col ul a:hover{color:var(--blush);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.06);padding-top:28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+.footer-bottom p{font-size:0.72rem;color:rgba(255,255,255,0.2);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity 0.75s ease,transform 0.75s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:0.1s;}
+.reveal-d2{transition-delay:0.2s;}
+.reveal-d3{transition-delay:0.3s;}
+
+/* RESPONSIVE */
+@media(max-width:1024px){
+  nav{padding:20px 32px;}
+  .hero{grid-template-columns:1fr 1fr;}
+  .hero-left{padding:80px 40px;}
+  #tipos,#prazos,#direitos,#procedimentos{padding:80px 32px;}
+  .tipos-top,.direitos-top{grid-template-columns:1fr;gap:24px;}
+  .proc-layout{grid-template-columns:1fr;}
+  .proc-sidebar{position:static;}
+  .como-inner{grid-template-columns:1fr;}
+  .como-left,.como-right{padding:60px 32px;}
+  .form-inner{grid-template-columns:1fr;}
+  .form-left,.form-right{padding:60px 32px;}
+  .final-banner{flex-direction:column;padding:60px 32px;}
+  footer{padding:60px 32px 32px;}
+  .footer-grid{gap:40px;}
+}
+@media(max-width:768px){
+  nav{padding:18px 24px;}
+  .nav-links{display:none;}
+  .nav-toggle{display:flex;}
+  .mobile-menu{display:flex;}
+  .hero{grid-template-columns:1fr;min-height:auto;}
+  .hero-left{padding:60px 24px 48px;}
+  .hero-right{min-height:260px;}
+  .hero-badge-row{gap:20px;flex-wrap:wrap;}
+  #tipos,#prazos,#direitos,#procedimentos{padding:72px 24px;}
+  .tipos-grid{grid-template-columns:1fr;}
+  .direitos-grid{grid-template-columns:1fr;}
+  .prazos-table thead{display:none;}
+  .prazos-table tbody tr{display:block;padding:20px 0;border-bottom:1px solid var(--divider);}
+  .prazos-table tbody td{display:flex;justify-content:space-between;align-items:center;padding:6px 0;font-size:0.76rem;}
+  .prazos-table tbody td::before{content:attr(data-label);font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-light);flex-shrink:0;margin-right:16px;}
+  .como-right{padding:48px 24px;}
+  .form-row{grid-template-columns:1fr;}
+  .form-left,.form-right{padding:60px 24px;}
+  .final-banner{padding:60px 24px;}
+  .final-banner-links{flex-direction:column;width:100%;}
+  footer{padding:56px 24px 32px;}
+  .footer-grid{grid-template-columns:1fr;gap:40px;margin-bottom:40px;}
+  .footer-bottom{flex-direction:column;align-items:flex-start;gap:8px;}
+}
+</style>
+</head>
+<body>
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#tipos" onclick="closeMenu()">Tipos</a>
+  <a href="#procedimentos" onclick="closeMenu()">Procedimentos</a>
+  <a href="#prazos" onclick="closeMenu()">Prazos</a>
+  <a href="#direitos" onclick="closeMenu()">Seus Direitos</a>
+  <a href="#formulario" onclick="closeMenu()">Abrir Reclamação</a>
+</div>
+
+<nav>
+  <a href="#" class="nav-logo">Candy<span>Care</span></a>
+  <ul class="nav-links">
+    <li><a href="#tipos">Tipos</a></li>
+    <li><a href="#procedimentos">Procedimentos</a></li>
+    <li><a href="#prazos">Prazos</a></li>
+    <li><a href="#direitos">Seus Direitos</a></li>
+    <li><a href="#formulario">Abrir Reclamação</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-kicker">
+      <div class="hero-kicker-line"></div>
+      <p>CandyCare — Central de Reclamações</p>
+    </div>
+    <h1 class="hero-title">Sua voz<em>importa aqui.</em></h1>
+    <p class="hero-sub">Esta é a central oficial de reclamações e procedimentos da CandyCare. Cada solicitação é tratada com seriedade, empatia e dentro dos prazos que nos comprometemos a cumprir.</p>
+    <div class="hero-cta-row">
+      <a href="#formulario" class="btn-hero-primary">
+        Abrir uma reclamação
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="#procedimentos" class="btn-hero-ghost">Ver procedimentos</a>
+    </div>
+    <div class="hero-badge-row">
+      <div><p class="hero-badge-num">100%</p><p class="hero-badge-label">Respondidas</p></div>
+      <div><p class="hero-badge-num">5</p><p class="hero-badge-label">Dias úteis máx.</p></div>
+      <div><p class="hero-badge-num">0</p><p class="hero-badge-label">Sem resposta</p></div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-orb"></div>
+    <div class="hero-right-inner">
+      <div class="complaint-preview">
+        <div class="cp-header">
+          <p>Central de Reclamações</p>
+          <p>Acompanhamento de Casos</p>
+        </div>
+        <div class="cp-item"><div class="cp-dot andamento"></div><div class="cp-item-text">Produto recebido com avaria na embalagem</div><div class="cp-item-status">Em análise</div></div>
+        <div class="cp-item"><div class="cp-dot resolvido"></div><div class="cp-item-text">Pedido não chegou no prazo estimado</div><div class="cp-item-status">Resolvido</div></div>
+        <div class="cp-item"><div class="cp-dot aberto"></div><div class="cp-item-text">Sabor diferente do solicitado</div><div class="cp-item-status">Aberto</div></div>
+        <div class="cp-item"><div class="cp-dot resolvido"></div><div class="cp-item-text">Dúvida sobre composição do Isomalte</div><div class="cp-item-status">Resolvido</div></div>
+        <div class="cp-footer"><p>Atualizado agora</p><p>&#10022; CandyCare</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Toda reclamação é respondida</span>
+    <span class="marquee-item">Sem burocracia</span>
+    <span class="marquee-item">Seu bem-estar primeiro</span>
+    <span class="marquee-item">Transparência real</span>
+    <span class="marquee-item">Prazo máximo 5 dias úteis</span>
+    <span class="marquee-item">Atendimento humanizado</span>
+    <span class="marquee-item">Toda reclamação é respondida</span>
+    <span class="marquee-item">Sem burocracia</span>
+    <span class="marquee-item">Seu bem-estar primeiro</span>
+    <span class="marquee-item">Transparência real</span>
+    <span class="marquee-item">Prazo máximo 5 dias úteis</span>
+    <span class="marquee-item">Atendimento humanizado</span>
+  </div>
+</div>
+
+<!-- TIPOS -->
+<section id="tipos">
+  <div class="tipos-inner">
+    <div class="tipos-top reveal">
+      <div><div class="deco-line"></div><p class="section-eyebrow">Categorias</p><h2 class="section-title">Tipos de<br><em>reclamação</em></h2></div>
+      <p class="tipos-top-right">Classificamos as reclamações em categorias para garantir que cada caso seja direcionado à equipe certa e resolvido dentro do prazo mais adequado. Identifique abaixo o tipo que melhor descreve a sua situação.</p>
+    </div>
+    <div class="tipos-grid">
+      <div class="tipo-card reveal">
+        <div class="tipo-icon"><svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg></div>
+        <p class="tipo-tag">Categoria A</p>
+        <h3 class="tipo-title">Qualidade do Produto</h3>
+        <p class="tipo-body">Produto com sabor alterado, textura fora do padrão, corpo estranho, validade incorreta ou qualquer desvio perceptível na composição ou aparência do doce.</p>
+        <span class="tipo-prazo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Resposta em 48h</span>
+      </div>
+      <div class="tipo-card reveal reveal-d1">
+        <div class="tipo-icon"><svg viewBox="0 0 24 24"><rect x="1" y="3" width="15" height="13" rx="1"/><path d="M16 8h5l3 5v3h-8V8z"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/></svg></div>
+        <p class="tipo-tag">Categoria B</p>
+        <h3 class="tipo-title">Entrega e Logística</h3>
+        <p class="tipo-body">Pedido não recebido, entrega fora do prazo, embalagem danificada no transporte, produto errado entregue ou endereço incorreto processado.</p>
+        <span class="tipo-prazo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Resposta em 24h</span>
+      </div>
+      <div class="tipo-card reveal reveal-d2">
+        <div class="tipo-icon"><svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+        <p class="tipo-tag">Categoria C</p>
+        <h3 class="tipo-title">Atendimento</h3>
+        <p class="tipo-body">Insatisfação com a qualidade do atendimento recebido, demora na resposta, tom inadequado, informações incorretas fornecidas ou falta de retorno.</p>
+        <span class="tipo-prazo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Resposta em 24h</span>
+      </div>
+      <div class="tipo-card reveal">
+        <div class="tipo-icon"><svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
+        <p class="tipo-tag">Categoria D</p>
+        <h3 class="tipo-title">Pagamento e Cobrança</h3>
+        <p class="tipo-body">Cobrança indevida, valor divergente do acordado, problema com estorno, pagamento não confirmado ou dificuldade em processar o pedido.</p>
+        <span class="tipo-prazo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Resposta em 48h</span>
+      </div>
+      <div class="tipo-card reveal reveal-d1">
+        <div class="tipo-icon"><svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg></div>
+        <p class="tipo-tag">Categoria E</p>
+        <h3 class="tipo-title">Experiência Geral</h3>
+        <p class="tipo-body">Expectativas não atendidas em relação à marca, embalagem, apresentação, comunicação ou qualquer aspecto que tenha gerado insatisfação geral.</p>
+        <span class="tipo-prazo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Resposta em 5 dias úteis</span>
+      </div>
+      <div class="tipo-card reveal reveal-d2">
+        <div class="tipo-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></div>
+        <p class="tipo-tag">Categoria F</p>
+        <h3 class="tipo-title">Outros / Não classificado</h3>
+        <p class="tipo-body">Qualquer outro tipo de insatisfação ou solicitação que não se encaixe nas categorias acima. Nossa equipe irá classificar e direcionar internamente.</p>
+        <span class="tipo-prazo"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>Resposta em 48h</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCEDIMENTOS -->
+<section id="procedimentos">
+  <div class="proc-inner">
+    <div class="proc-layout">
+      <div class="proc-sidebar reveal">
+        <div class="deco-line"></div>
+        <p class="section-eyebrow">Passo a passo</p>
+        <h2 class="section-title">Procedimentos<br>internos de<br><em>resolução</em></h2>
+        <p class="section-body">Este é o protocolo que nossa equipe segue para cada reclamação recebida. O processo é o mesmo para todos os clientes, sem exceções.</p>
+        <p class="section-body">Você pode acompanhar em qual etapa seu caso está a qualquer momento pelo canal em que abriu a reclamação.</p>
+      </div>
+      <div class="accordion reveal reveal-d1" id="accordion">
+        <div class="acc-item open">
+          <button class="acc-trigger"><div class="acc-trigger-left"><span class="acc-step-num">01</span><span class="acc-title">Recebimento e Registro</span></div><svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-body"><div class="acc-body-inner">
+            <p>Toda reclamação recebida por qualquer canal é registrada internamente com número de protocolo, data e hora, canal de entrada e categoria preliminar.</p>
+            <div class="acc-checklist">
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Confirmação de recebimento enviada em até 2h úteis</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Número de protocolo gerado e comunicado</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Classificação preliminar por categoria</span></div>
+            </div>
+            <div class="acc-note"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><p>Se sua reclamação não receber confirmação em 2 horas úteis, reenvie pelo mesmo canal mencionando que não houve retorno.</p></div>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-trigger"><div class="acc-trigger-left"><span class="acc-step-num">02</span><span class="acc-title">Análise e Classificação</span></div><svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-body"><div class="acc-body-inner">
+            <p>A reclamação é lida na íntegra e classificada por tipo, urgência e impacto. Casos com evidências de risco à saúde são elevados imediatamente ao nível de gestão.</p>
+            <div class="acc-checklist">
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Classificação final por categoria A–F</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Definição de urgência: padrão, elevada ou crítica</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Encaminhamento ao responsável interno</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Solicitação de evidências (fotos, nota fiscal) se necessário</span></div>
+            </div>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-trigger"><div class="acc-trigger-left"><span class="acc-step-num">03</span><span class="acc-title">Investigação Interna</span></div><svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-body"><div class="acc-body-inner">
+            <p>A equipe responsável investiga a origem do problema. Para reclamações de qualidade, o lote de produção é verificado. Para logística, o histórico de entrega é consultado junto à transportadora.</p>
+            <div class="acc-checklist">
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Rastreamento do lote de produção (quando aplicável)</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Consulta ao histórico de entrega e transportadora</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Identificação da causa-raiz do problema</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Documentação do caso para melhoria contínua</span></div>
+            </div>
+            <div class="acc-note"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg><p>A investigação é feita internamente. Você não precisa provar nada além das evidências iniciais solicitadas.</p></div>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-trigger"><div class="acc-trigger-left"><span class="acc-step-num">04</span><span class="acc-title">Proposta de Resolução</span></div><svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-body"><div class="acc-body-inner">
+            <p>Com base na investigação, a equipe define a solução mais adequada e entra em contato com o cliente para apresentá-la antes de executar.</p>
+            <div class="acc-checklist">
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Reenvio do produto sem custo adicional</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Reembolso integral ou parcial (em até 10 dias úteis)</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Crédito para compra futura (com consentimento)</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Esclarecimentos técnicos por escrito (para dúvidas sobre produto)</span></div>
+            </div>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-trigger"><div class="acc-trigger-left"><span class="acc-step-num">05</span><span class="acc-title">Execução e Confirmação</span></div><svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-body"><div class="acc-body-inner">
+            <p>Após aprovação do cliente, a solução é executada. Um follow-up é realizado para confirmar se o problema foi resolvido de forma satisfatória.</p>
+            <div class="acc-checklist">
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Execução da solução acordada</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Confirmação de satisfação com o cliente</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Encerramento formal do caso com registro</span></div>
+            </div>
+            <div class="acc-note"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg><p>Se não estiver satisfeito com a resolução, o caso pode ser reaberto imediatamente. Não existe prazo para reabertura.</p></div>
+          </div></div>
+        </div>
+        <div class="acc-item">
+          <button class="acc-trigger"><div class="acc-trigger-left"><span class="acc-step-num">06</span><span class="acc-title">Aprendizado e Melhoria</span></div><svg class="acc-chevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg></button>
+          <div class="acc-body"><div class="acc-body-inner">
+            <p>Toda reclamação encerrada alimenta nosso banco de dados de melhoria contínua. Padrões identificados geram ações corretivas no produto, na embalagem ou no processo logístico.</p>
+            <div class="acc-checklist">
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Registro na base de melhoria contínua</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Identificação de padrões recorrentes</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Geração de ação corretiva interna quando necessário</span></div>
+              <div class="acc-check-row"><div class="acc-check-dot"></div><span>Agradecimento ao cliente pela contribuição</span></div>
+            </div>
+          </div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRAZOS -->
+<section id="prazos">
+  <div class="prazos-inner">
+    <div class="prazos-header reveal">
+      <div class="deco-line"></div>
+      <p class="section-eyebrow">SLA — Nível de serviço</p>
+      <h2 class="section-title">Prazos por tipo<br>de <em>reclamação</em></h2>
+    </div>
+    <table class="prazos-table reveal">
+      <thead><tr>
+        <th>Categoria</th><th>Tipo de Reclamacao</th><th>1ª Resposta</th><th>Prazo de Resolução</th><th>Prioridade</th><th>Canal Indicado</th>
+      </tr></thead>
+      <tbody>
+        <tr><td data-label="Cat.">A</td><td data-label="Tipo" class="td-tipo">Qualidade do Produto</td><td data-label="1ª Resposta" class="td-prazo">2h</td><td data-label="Resolução">Até 48 horas úteis</td><td data-label="Prioridade"><span class="td-badge priority">Alta</span></td><td data-label="Canal">WhatsApp ou E-mail</td></tr>
+        <tr><td data-label="Cat.">B</td><td data-label="Tipo" class="td-tipo">Entrega e Logística</td><td data-label="1ª Resposta" class="td-prazo">2h</td><td data-label="Resolução">Até 24 horas úteis</td><td data-label="Prioridade"><span class="td-badge priority">Alta</span></td><td data-label="Canal">WhatsApp</td></tr>
+        <tr><td data-label="Cat.">C</td><td data-label="Tipo" class="td-tipo">Atendimento</td><td data-label="1ª Resposta" class="td-prazo">2h</td><td data-label="Resolução">Até 24 horas úteis</td><td data-label="Prioridade"><span class="td-badge priority">Alta</span></td><td data-label="Canal">WhatsApp ou Instagram</td></tr>
+        <tr><td data-label="Cat.">D</td><td data-label="Tipo" class="td-tipo">Pagamento e Cobrança</td><td data-label="1ª Resposta" class="td-prazo">4h</td><td data-label="Resolução">Até 48 horas úteis</td><td data-label="Prioridade"><span class="td-badge">Media</span></td><td data-label="Canal">E-mail</td></tr>
+        <tr><td data-label="Cat.">E</td><td data-label="Tipo" class="td-tipo">Experiência Geral</td><td data-label="1ª Resposta" class="td-prazo">24h</td><td data-label="Resolução">Até 5 dias úteis</td><td data-label="Prioridade"><span class="td-badge">Padrao</span></td><td data-label="Canal">Qualquer canal</td></tr>
+        <tr><td data-label="Cat.">F</td><td data-label="Tipo" class="td-tipo">Outros</td><td data-label="1ª Resposta" class="td-prazo">24h</td><td data-label="Resolução">Até 48 horas úteis</td><td data-label="Prioridade"><span class="td-badge">Padrao</span></td><td data-label="Canal">Qualquer canal</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- COMO ABRIR -->
+<section id="como-abrir">
+  <div class="como-inner">
+    <div class="como-left reveal">
+      <div class="deco-line"></div>
+      <p class="section-eyebrow">Guia rápido</p>
+      <h2 class="section-title">Como abrir<br>sua <em>reclamação</em></h2>
+      <p class="section-body">Você pode abrir uma reclamação pelo canal de sua preferência ou diretamente pelo formulário nesta página. O processo é simples e sem burocracia.</p>
+    </div>
+    <div class="como-right">
+      <div class="como-step reveal"><div class="como-step-num">01</div><div><p class="como-step-title">Escolha o canal</p><p class="como-step-body">Selecione o canal mais conveniente — WhatsApp, Instagram, e-mail ou o formulário nesta página. Todos têm o mesmo nível de atenção e os mesmos prazos.</p><span class="como-step-tag">WhatsApp · Instagram · E-mail · Formulário</span></div></div>
+      <div class="como-step reveal reveal-d1"><div class="como-step-num">02</div><div><p class="como-step-title">Descreva o problema</p><p class="como-step-body">Explique o que aconteceu com o máximo de detalhes. Número do pedido, data da compra e descrição clara do problema nos ajudam a resolver mais rápido.</p><span class="como-step-tag">Seja específico · Inclua datas</span></div></div>
+      <div class="como-step reveal reveal-d2"><div class="como-step-num">03</div><div><p class="como-step-title">Envie evidências (se tiver)</p><p class="como-step-body">Fotos do produto, da embalagem ou do comprovante de pagamento aceleram muito a análise. Não são obrigatórias, mas ajudam bastante.</p><span class="como-step-tag">Fotos · Comprovante · Nota fiscal</span></div></div>
+      <div class="como-step reveal reveal-d1"><div class="como-step-num">04</div><div><p class="como-step-title">Aguarde o retorno</p><p class="como-step-body">Você receberá a confirmação de recebimento em até 2 horas úteis com o número de protocolo. Acompanhe pelo mesmo canal em que abriu o caso.</p><span class="como-step-tag">Protocolo gerado · Prazo garantido</span></div></div>
+      <div class="como-step reveal reveal-d2"><div class="como-step-num">05</div><div><p class="como-step-title">Confirme a resolucao</p><p class="como-step-body">Quando a solução for apresentada, confirme se atende à sua expectativa. Caso contrário, o caso pode ser reaberto sem nenhuma restrição de prazo.</p><span class="como-step-tag">Reabertura sempre disponível</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DIREITOS -->
+<section id="direitos">
+  <div class="direitos-inner">
+    <div class="direitos-top reveal">
+      <div><div class="deco-line"></div><p class="section-eyebrow">O que nos compromete</p><h2 class="section-title">Seus direitos<br>como <em>cliente</em></h2></div>
+      <p class="section-body" style="align-self:end;">Estes não são apenas boas práticas — são compromissos que a CandyCare assume com cada pessoa que escolhe nossos produtos. Em conformidade com o CDC e a LGPD.</p>
+    </div>
+    <div class="direitos-grid">
+      <div class="direito-card reveal"><div class="direito-letter">A</div><div><p class="direito-tag">Direito fundamental</p><p class="direito-title">Ser ouvido e respondido</p><p class="direito-body">Toda reclamação enviada receberá uma resposta real — não automática e não genérica. Nenhum caso ficará sem retorno, independente do canal ou complexidade.</p></div></div>
+      <div class="direito-card reveal reveal-d1"><div class="direito-letter">B</div><div><p class="direito-tag">Direito de informacao</p><p class="direito-title">Saber o que esta acontecendo</p><p class="direito-body">Você tem direito de saber em qual etapa seu caso está a qualquer momento. Nossa equipe proativamente informa sobre mudanças de prazo ou status.</p></div></div>
+      <div class="direito-card reveal reveal-d2"><div class="direito-letter">C</div><div><p class="direito-tag">Direito de reparacao</p><p class="direito-title">Reenvio ou reembolso garantidos</p><p class="direito-body">Problemas confirmados de qualidade ou entrega resultam em reenvio sem custo ou reembolso integral — sem discussão, sem minimização do problema.</p></div></div>
+      <div class="direito-card reveal reveal-d1"><div class="direito-letter">D</div><div><p class="direito-tag">Direito a privacidade</p><p class="direito-title">Seus dados protegidos (LGPD)</p><p class="direito-body">As informações compartilhadas na reclamação são utilizadas exclusivamente para resolução do caso e melhoria interna, nunca para fins comerciais.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULARIO -->
+<section id="formulario">
+  <div class="form-inner">
+    <div class="form-left reveal">
+      <div class="deco-line"></div>
+      <p class="section-eyebrow">Abrir reclamação</p>
+      <h2 class="section-title">Preencha o<br><em>formulário</em></h2>
+      <p class="section-body">Use este formulário para abrir uma reclamação formal. Você receberá a confirmação com número de protocolo em até 2 horas úteis.</p>
+      <p class="section-body">Prefere outro canal? Entre em contato pelo WhatsApp, Instagram ou e-mail.</p>
+      <div style="margin-top:32px;display:flex;flex-direction:column;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:1px;height:32px;background:var(--divider);"></div><div><p style="font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-light);margin-bottom:3px;">WhatsApp</p><a href="https://wa.me/5511999999999" style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text-dark);text-decoration:none;">Falar agora</a></div></div>
+        <div style="display:flex;align-items:center;gap:12px;"><div style="width:1px;height:32px;background:var(--divider);"></div><div><p style="font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-light);margin-bottom:3px;">E-mail</p><a href="mailto:reclamacoes@candycare.com.br" style="font-family:'Cormorant Garamond',serif;font-size:1rem;color:var(--text-dark);text-decoration:none;">reclamacoes@candycare.com.br</a></div></div>
+      </div>
+    </div>
+    <div class="form-right">
+      <div class="form-container" id="formContainer">
+        <div class="form-fields">
+          <div class="form-row">
+            <div class="form-group"><label class="form-label" for="f-nome">Nome completo</label><input class="form-input" id="f-nome" type="text" placeholder="Seu nome"></div>
+            <div class="form-group"><label class="form-label" for="f-email">E-mail</label><input class="form-input" id="f-email" type="email" placeholder="seu@email.com"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-group"><label class="form-label" for="f-pedido">Número do pedido (opcional)</label><input class="form-input" id="f-pedido" type="text" placeholder="Ex: #12345"></div>
+            <div class="form-group"><label class="form-label" for="f-categoria">Categoria</label>
+              <select class="form-select" id="f-categoria">
+                <option value="" disabled selected>Selecione</option>
+                <option>A — Qualidade do Produto</option>
+                <option>B - Entrega e Logística</option>
+                <option>C — Atendimento</option>
+                <option>D - Pagamento e Cobrança</option>
+                <option>E - Experiência Geral</option>
+                <option>F — Outros</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group"><label class="form-label" for="f-canal">Canal de retorno preferido</label>
+            <select class="form-select" id="f-canal">
+              <option value="" disabled selected>Selecione</option>
+              <option>WhatsApp</option><option>Instagram</option><option>E-mail</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label" for="f-desc">Descrição do problema</label><textarea class="form-textarea" id="f-desc" placeholder="Descreva o que aconteceu com o máximo de detalhes possível. Inclua datas, produtos envolvidos e qualquer informação relevante..."></textarea></div>
+          <button class="btn-submit" id="submitBtn" type="button">
+            Enviar reclamação
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+          <p class="form-note">Ao enviar, você concorda com nossa Política de Privacidade. Seus dados são usados somente para resolução do caso.</p>
+        </div>
+        <div class="form-success">
+          <div class="success-icon"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+          <p class="success-title">Reclamação recebida</p>
+          <p class="success-body">Obrigada por entrar em contato. Você receberá a confirmação com número de protocolo em até 2 horas úteis pelo canal escolhido.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="final-banner reveal">
+  <div>
+    <p class="final-banner-title">Sua satisfação<em>não é opcional.</em></p>
+    <p class="final-banner-desc">Na CandyCare, cada reclamação é uma oportunidade de melhorar. Levamos cada caso a sério porque acreditamos que cuidar vai além do produto.</p>
+  </div>
+  <div class="final-banner-links">
+    <a href="https://wa.me/5511999999999" class="btn-final-solid" target="_blank">Falar pelo WhatsApp</a>
+    <a href="mailto:reclamacoes@candycare.com.br" class="btn-final-outline">Enviar e-mail</a>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand">Candy<span>Care</span></p>
+      <p class="footer-desc">Sabor que cuida. Doces premium sem açúcar, desenvolvidos com Isomalte para quem merece o melhor.</p>
+    </div>
+    <div class="footer-col"><h4>Navegação</h4>
+      <ul>
+        <li><a href="politica_atedimento.html">Política de Atendimento</a></li>
+        <li><a href="fluxo-atendimento.html">Fluxo de Atendimento</a></li>
+        <li><a href="etica-candycare.html">Código de Ética da CandyCare</a></li>
+        <li><a href="organograma.html">Organograma Setorial</a></li>
+      </ul>
+  </div>
+    <div class="footer-col"><h4>Reclamações</h4><ul><li><a href="mailto:reclamacoes@candycare.com.br">reclamacoes@candycare.com.br</a></li><li><a href="#">@candycare</a></li><li><a href="#">WhatsApp</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 CandyCare. Todos os direitos reservados.</p>
+    <p>Feito com &#10022; e muito Isomalte</p>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+let mx=0,my=0,rx=0,ry=0;
+if(window.matchMedia('(pointer:fine)').matches){
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform=`translate(${mx-4}px,${my-4}px)`;});
+  (function t(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.transform=`translate(${rx-14}px,${ry-14}px)`;requestAnimationFrame(t);})();
+}
+const navToggle=document.getElementById('navToggle'),mobileMenu=document.getElementById('mobileMenu');
+navToggle.addEventListener('click',()=>{navToggle.classList.toggle('open');mobileMenu.classList.toggle('open');document.body.style.overflow=mobileMenu.classList.contains('open')?'hidden':'';});
+function closeMenu(){navToggle.classList.remove('open');mobileMenu.classList.remove('open');document.body.style.overflow='';}
+const reveals=document.querySelectorAll('.reveal');
+new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.07}).observe&&reveals.forEach(r=>new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.07}).observe(r));
+const accItems=document.querySelectorAll('.acc-item');
+accItems.forEach(item=>{
+  const trigger=item.querySelector('.acc-trigger'),body=item.querySelector('.acc-body');
+  if(item.classList.contains('open'))body.style.maxHeight=body.scrollHeight+'px';
+  trigger.addEventListener('click',()=>{
+    const isOpen=item.classList.contains('open');
+    accItems.forEach(i=>{i.classList.remove('open');i.querySelector('.acc-body').style.maxHeight='0';});
+    if(!isOpen){item.classList.add('open');body.style.maxHeight=body.scrollHeight+'px';}
+  });
+});
+document.getElementById('submitBtn').addEventListener('click',()=>{
+  const nome=document.getElementById('f-nome').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const cat=document.getElementById('f-categoria').value;
+  const desc=document.getElementById('f-desc').value.trim();
+  if(!nome||!email||!cat||!desc){
+    const btn=document.getElementById('submitBtn');
+    [0,1,2,3].forEach(i=>setTimeout(()=>{btn.style.transform=i%2===0?'translateX(6px)':'translateX(-6px)';},i*80));
+    setTimeout(()=>{btn.style.transform='';},360);return;
+  }
+  document.getElementById('formContainer').classList.add('submitted');
+});
+</script>
+<!-- Botão de Voltar -->
+<a href="index.html" class="botao-voltar">
+  ← Voltar
+</a>
+
+<style>
+  .botao-voltar{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+    border-radius: 30px;
+
+    background-color: #f9e8e6;
+    color: #2a1f1e;
+
+    border: 2px solid #f2c4c4;
+
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(42, 31, 30, 0.12);
+
+    z-index: 999;
+  }
+
+  .botao-voltar:hover{
+    background-color: #f2c4c4;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(42, 31, 30, 0.18);
+  }
+
+  .botao-voltar:active{
+    transform: scale(0.98);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px){
+    .botao-voltar{
+      bottom: 15px;
+      right: 15px;
+
+      padding: 10px 18px;
+      font-size: 14px;
+    }
+  }
+</style>
+</body>
+</html>

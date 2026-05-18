@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="icon" href="icon/icon_candycare 4.0.png" type="image/png">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fluxo de Atendimento — CandyCare</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --blush:     #f2c4c4;
+      --nude:      #e8b4b0;
+      --rose-gold: #c8956c;
+      --pale:      #fdf5f3;
+      --white:     #ffffff;
+      --soft-pink: #f9e8e6;
+      --text-dark: #2a1f1e;
+      --text-mid:  #7a5c58;
+      --text-light:#b89490;
+      --gold:      #c9a87c;
+      --divider:   rgba(200,149,108,0.2);
+    }
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--pale);
+      color: var(--text-dark);
+      font-weight: 300;
+      overflow-x: hidden;
+    }
+
+    /* ── CURSOR ── */
+    @media (pointer: fine) { * { cursor: none; } }
+    #cursor, #cursor-ring { display: none; }
+    @media (pointer: fine) {
+      #cursor {
+        display: block; width: 8px; height: 8px;
+        background: var(--rose-gold); border-radius: 50%;
+        position: fixed; top:0; left:0;
+        pointer-events: none; z-index: 9999;
+        transition: transform 0.15s ease;
+      }
+      #cursor-ring {
+        display: block; width: 28px; height: 28px;
+        border: 1px solid var(--blush); border-radius: 50%;
+        position: fixed; top:0; left:0;
+        pointer-events: none; z-index: 9998;
+        transition: transform 0.4s ease, opacity 0.3s;
+      }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top:0; left:0; right:0; z-index:100;
+      padding: 20px 60px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(253,245,243,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--divider);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 1.6rem;
+      letter-spacing: 0.12em; color: var(--text-dark);
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--rose-gold); }
+    .nav-links { display: flex; gap: 40px; list-style: none; }
+    .nav-links a {
+      font-weight: 200; font-size: 0.75rem;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-mid); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--rose-gold); }
+    .nav-toggle {
+      display: none; flex-direction: column; gap: 5px;
+      background: none; border: none; cursor: pointer; padding: 4px; z-index: 200;
+    }
+    .nav-toggle span {
+      display: block; width: 24px; height: 1px;
+      background: var(--text-dark);
+      transition: all 0.3s ease; transform-origin: center;
+    }
+    .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+    .nav-toggle.open span:nth-child(2) { opacity: 0; }
+    .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+    .mobile-menu {
+      display: none; position: fixed; inset: 0;
+      background: rgba(253,245,243,0.98); backdrop-filter: blur(16px);
+      z-index: 150; flex-direction: column;
+      align-items: center; justify-content: center; gap: 40px;
+      opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+    }
+    .mobile-menu.open { opacity: 1; pointer-events: all; }
+    .mobile-menu a {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: var(--text-dark);
+      text-decoration: none; letter-spacing: 0.1em; transition: color 0.3s;
+    }
+    .mobile-menu a:hover { color: var(--rose-gold); }
+
+    /* ── HERO ── */
+    .hero {
+      padding-top: 80px;
+      min-height: 55vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+    .hero-left {
+      background: var(--white);
+      padding: 80px 60px;
+      display: flex; flex-direction: column; justify-content: center;
+      position: relative;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute; right: 0; top: 15%; bottom: 15%;
+      width: 1px; background: var(--divider);
+    }
+    .hero-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: var(--rose-gold); margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.6rem, 4.5vw, 4.2rem);
+      font-weight: 300; line-height: 1.1; color: var(--text-dark);
+      margin-bottom: 24px;
+      opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--rose-gold); }
+    .hero-sub {
+      font-size: 0.86rem; line-height: 1.95; color: var(--text-mid);
+      max-width: 420px; margin-bottom: 40px;
+      opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .hero-stats {
+      display: flex; gap: 40px;
+      opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .hero-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 300; color: var(--rose-gold);
+      line-height: 1;
+    }
+    .hero-stat-label {
+      font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--text-light); margin-top: 4px;
+    }
+    .hero-right {
+      background: var(--soft-pink);
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden; padding: 60px;
+    }
+
+    /* animated flow preview in hero */
+    .hero-flow-preview {
+      display: flex; flex-direction: column; align-items: center; gap: 0;
+      opacity: 0; animation: fadeIn 1s 0.6s forwards;
+    }
+    .hfp-node {
+      background: white; border: 1px solid var(--divider);
+      padding: 14px 24px; font-size: 0.72rem;
+      letter-spacing: 0.12em; color: var(--text-dark);
+      text-align: center; width: 200px;
+      position: relative;
+      animation: pulse-border 3s ease-in-out infinite;
+    }
+    .hfp-node:nth-child(3) { animation-delay: 0.5s; }
+    .hfp-node:nth-child(5) { animation-delay: 1s; }
+    .hfp-node:nth-child(7) { animation-delay: 1.5s; }
+    @keyframes pulse-border {
+      0%, 100% { border-color: var(--divider); }
+      50% { border-color: var(--rose-gold); }
+    }
+    .hfp-node-label {
+      font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--rose-gold); margin-bottom: 4px;
+    }
+    .hfp-node-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.95rem; font-weight: 400; color: var(--text-dark);
+    }
+    .hfp-arrow {
+      width: 1px; height: 28px;
+      background: linear-gradient(to bottom, var(--rose-gold), transparent);
+      position: relative;
+    }
+    .hfp-arrow::after {
+      content: '';
+      position: absolute; bottom: 0; left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 6px solid var(--blush);
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--rose-gold); padding: 14px 0;
+      overflow: hidden; white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-block;
+      animation: marquee 20s linear infinite;
+    }
+    .marquee-item {
+      display: inline-block; font-size: 0.62rem;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: white; padding: 0 32px;
+    }
+    .marquee-item::after { content: '✦'; margin-left: 32px; opacity: 0.6; }
+
+    /* ── SECTION SHARED ── */
+    .section-eyebrow {
+      font-size: 0.62rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--rose-gold); margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem);
+      font-weight: 300; line-height: 1.2; color: var(--text-dark); margin-bottom: 28px;
+    }
+    .section-title em { font-style: italic; color: var(--rose-gold); }
+    .section-body {
+      font-size: 0.85rem; line-height: 2; color: var(--text-mid); margin-bottom: 20px;
+    }
+    .deco-line {
+      width: 40px; height: 1px;
+      background: var(--rose-gold); margin-bottom: 32px; opacity: 0.6;
+    }
+
+    /* ── FLUXO PRINCIPAL (timeline vertical) ── */
+    #fluxo {
+      padding: 120px 60px;
+      background: var(--white);
+    }
+    .fluxo-inner { max-width: 1100px; margin: 0 auto; }
+    .fluxo-header {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 60px; margin-bottom: 100px; align-items: end;
+    }
+    .fluxo-header-right {
+      font-size: 0.82rem; line-height: 2; color: var(--text-mid);
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 50%; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, transparent, var(--rose-gold) 5%, var(--rose-gold) 95%, transparent);
+      transform: translateX(-50%);
+    }
+
+    .tl-step {
+      display: grid;
+      grid-template-columns: 1fr 80px 1fr;
+      align-items: start;
+      margin-bottom: 64px;
+      position: relative;
+    }
+    .tl-step:last-child { margin-bottom: 0; }
+
+    /* alternating sides */
+    .tl-step:nth-child(odd)  .tl-content { grid-column: 1; text-align: right; padding-right: 48px; }
+    .tl-step:nth-child(odd)  .tl-empty   { grid-column: 3; }
+    .tl-step:nth-child(even) .tl-content { grid-column: 3; padding-left: 48px; }
+    .tl-step:nth-child(even) .tl-empty   { grid-column: 1; }
+    .tl-center { grid-column: 2; display: flex; flex-direction: column; align-items: center; position: relative; z-index: 2; }
+
+    .tl-node {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--pale);
+      border: 1px solid var(--rose-gold);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+      transition: background 0.4s, box-shadow 0.4s;
+    }
+    .tl-node:hover {
+      background: var(--rose-gold);
+      box-shadow: 0 0 0 8px rgba(200,149,108,0.12);
+    }
+    .tl-node:hover svg { stroke: white; }
+    .tl-node svg { width: 20px; stroke: var(--rose-gold); fill: none; stroke-width: 1.4; transition: stroke 0.3s; }
+
+    .tl-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 0.75rem; font-style: italic;
+      color: var(--text-light); margin-top: 8px;
+    }
+
+    /* content card */
+    .tl-card {
+      border: 1px solid var(--divider);
+      padding: 28px 32px;
+      background: var(--pale);
+      transition: border-color 0.35s, transform 0.35s, box-shadow 0.35s;
+      cursor: default;
+    }
+    .tl-card:hover {
+      border-color: var(--rose-gold);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(200,149,108,0.1);
+    }
+    .tl-step:nth-child(odd) .tl-card { text-align: right; }
+
+    .tl-card-tag {
+      font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--rose-gold); margin-bottom: 10px;
+    }
+    .tl-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 400; color: var(--text-dark);
+      margin-bottom: 10px; line-height: 1.3;
+    }
+    .tl-card-body {
+      font-size: 0.8rem; line-height: 1.85; color: var(--text-mid);
+    }
+    .tl-card-chips {
+      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px;
+    }
+    .tl-step:nth-child(odd) .tl-card-chips { justify-content: flex-end; }
+    .chip {
+      display: inline-block;
+      font-size: 0.58rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--text-light); border: 1px solid var(--divider);
+      padding: 4px 10px;
+    }
+
+    /* ── CANAIS SECTION ── */
+    #canais {
+      padding: 0;
+      background: var(--soft-pink);
+    }
+    .canais-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+    }
+    .canais-left {
+      padding: 100px 60px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .canais-right {
+      padding: 100px 60px;
+      background: var(--white);
+      border-left: 1px solid var(--divider);
+      display: flex; flex-direction: column; gap: 0;
+    }
+
+    .canal-item {
+      display: flex; align-items: flex-start; gap: 24px;
+      padding: 28px 0;
+      border-bottom: 1px solid var(--divider);
+      transition: background 0.3s;
+    }
+    .canal-item:last-child { border-bottom: none; }
+    .canal-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border: 1px solid var(--divider);
+      display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .canal-item:hover .canal-icon {
+      border-color: var(--rose-gold);
+      background: var(--soft-pink);
+    }
+    .canal-icon svg { width: 20px; stroke: var(--rose-gold); fill: none; stroke-width: 1.4; }
+    .canal-label {
+      font-size: 0.58rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-light); margin-bottom: 4px;
+    }
+    .canal-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; color: var(--text-dark);
+      margin-bottom: 6px;
+    }
+    .canal-desc {
+      font-size: 0.78rem; line-height: 1.75; color: var(--text-mid);
+    }
+
+    /* ── SLAS / PRAZOS ── */
+    #prazos {
+      padding: 120px 60px;
+      background: var(--white);
+    }
+    .prazos-inner { max-width: 1100px; margin: 0 auto; }
+    .prazos-header { margin-bottom: 64px; }
+
+    .prazos-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px;
+      background: var(--divider);
+      border: 1px solid var(--divider);
+    }
+    .prazo-cell {
+      background: var(--pale);
+      padding: 40px 32px;
+      position: relative; overflow: hidden;
+      transition: background 0.4s;
+    }
+    .prazo-cell:hover { background: var(--soft-pink); }
+    .prazo-cell::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: var(--rose-gold); opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .prazo-cell:hover::before { opacity: 1; }
+    .prazo-big {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.2rem; font-weight: 300;
+      color: var(--rose-gold); line-height: 1;
+    }
+    .prazo-unit {
+      font-size: 0.6rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-light); margin-top: 4px; margin-bottom: 16px;
+    }
+    .prazo-label {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 400; color: var(--text-dark); margin-bottom: 8px;
+    }
+    .prazo-desc { font-size: 0.75rem; line-height: 1.75; color: var(--text-mid); }
+
+    /* ── DECISÃO / RAMIFICAÇÕES ── */
+    #decisoes {
+      padding: 120px 60px;
+      background: var(--soft-pink);
+    }
+    .decisoes-inner { max-width: 1100px; margin: 0 auto; }
+    .decisoes-header { text-align: center; margin-bottom: 80px; }
+    .decisoes-header .deco-line { margin: 0 auto 32px; }
+
+    .decisoes-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px;
+    }
+    .decisao-card {
+      background: var(--white);
+      padding: 48px 36px;
+      position: relative; overflow: hidden;
+      transition: transform 0.4s, box-shadow 0.4s;
+    }
+    .decisao-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 60px rgba(200,149,108,0.12);
+    }
+    .decisao-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 4rem; font-weight: 300; font-style: italic;
+      color: var(--blush); line-height: 1; margin-bottom: 20px;
+    }
+    .decisao-tag {
+      font-size: 0.58rem; letter-spacing: 0.25em; text-transform: uppercase;
+      color: var(--rose-gold); margin-bottom: 10px;
+    }
+    .decisao-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem; font-weight: 400; color: var(--text-dark);
+      margin-bottom: 14px; line-height: 1.3;
+    }
+    .decisao-body { font-size: 0.8rem; line-height: 1.9; color: var(--text-mid); margin-bottom: 24px; }
+    .decisao-steps {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .decisao-step {
+      display: flex; gap: 12px; align-items: flex-start;
+      font-size: 0.76rem; line-height: 1.6; color: var(--text-mid);
+    }
+    .decisao-step-dot {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--rose-gold); flex-shrink: 0; margin-top: 7px;
+    }
+
+    /* ── ESCALONAMENTO ── */
+    #escalona {
+      padding: 0;
+      background: var(--text-dark);
+    }
+    .escalona-inner {
+      display: grid; grid-template-columns: 1fr 2fr;
+    }
+    .escalona-left {
+      padding: 100px 60px;
+      border-right: 1px solid rgba(255,255,255,0.06);
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .escalona-left .section-eyebrow { color: var(--blush); }
+    .escalona-left .section-title { color: white; }
+    .escalona-left .section-title em { color: var(--blush); }
+    .escalona-left .section-body { color: rgba(255,255,255,0.45); }
+
+    .escalona-right {
+      padding: 100px 60px;
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .escalona-row {
+      display: grid; grid-template-columns: 60px 1fr auto;
+      gap: 24px; align-items: center;
+      padding: 28px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: background 0.3s;
+    }
+    .escalona-row:last-child { border-bottom: none; }
+    .escalona-row:hover { background: rgba(255,255,255,0.02); }
+    .escalona-level {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem; font-weight: 300; font-style: italic;
+      color: var(--rose-gold);
+    }
+    .escalona-name {
+      font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--blush); margin-bottom: 4px;
+    }
+    .escalona-desc { font-size: 0.8rem; line-height: 1.7; color: rgba(255,255,255,0.4); }
+    .escalona-prazo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: rgba(255,255,255,0.2);
+      text-align: right; white-space: nowrap;
+    }
+    .escalona-prazo span {
+      display: block; font-family: 'Jost', sans-serif;
+      font-size: 0.58rem; letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.15); margin-top: 2px;
+    }
+
+    /* ── ENCERRAMENTO ── */
+    #encerramento {
+      padding: 120px 60px;
+      background: var(--white);
+    }
+    .encerra-inner { max-width: 1100px; margin: 0 auto; }
+    .encerra-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .encerra-visual {
+      position: relative;
+    }
+    .encerra-visual-box {
+      background: var(--soft-pink);
+      padding: 48px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .encerra-visual-box::before {
+      content: '';
+      position: absolute; top: -40px; right: -40px;
+      width: 200px; height: 200px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(242,196,196,0.3) 0%, transparent 70%);
+    }
+    .encerra-big-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 5rem; font-weight: 300; font-style: italic;
+      color: var(--rose-gold); opacity: 0.25; line-height: 1;
+      margin-bottom: 16px;
+    }
+    .encerra-icon {
+      margin: 0 auto;
+    }
+    .encerra-icon svg { width: 80px; stroke: var(--rose-gold); fill: none; stroke-width: 0.6; }
+    .encerra-caption {
+      font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--text-light); margin-top: 20px;
+    }
+
+    .encerra-checklist {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .encerra-check {
+      display: flex; gap: 20px; align-items: flex-start;
+      padding: 22px 0;
+      border-bottom: 1px solid var(--divider);
+    }
+    .encerra-check:last-child { border-bottom: none; }
+    .check-icon {
+      width: 32px; height: 32px; flex-shrink: 0;
+      border: 1px solid var(--rose-gold);
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 2px;
+    }
+    .check-icon svg { width: 14px; stroke: var(--rose-gold); fill: none; stroke-width: 1.5; }
+    .check-label {
+      font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--text-light); margin-bottom: 4px;
+    }
+    .check-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem; font-weight: 400; color: var(--text-dark); margin-bottom: 4px;
+    }
+    .check-desc { font-size: 0.76rem; line-height: 1.7; color: var(--text-mid); }
+
+    /* ── COMPROMISSO BANNER ── */
+    .banner {
+      background: var(--rose-gold);
+      padding: 72px 60px;
+      display: flex; align-items: center; justify-content: space-between; gap: 40px;
+    }
+    .banner-left p:first-child {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 300; font-style: italic;
+      color: white; line-height: 1.2; margin-bottom: 12px;
+    }
+    .banner-left p:last-child {
+      font-size: 0.78rem; line-height: 1.8;
+      color: rgba(255,255,255,0.7);
+    }
+    .banner-right {
+      display: flex; gap: 16px; flex-shrink: 0;
+    }
+    .btn-banner {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 15px 32px;
+      font-family: 'Jost', sans-serif; font-weight: 300;
+      font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+      text-decoration: none; transition: all 0.3s; white-space: nowrap;
+    }
+    .btn-banner svg { width: 14px; transition: transform 0.3s; }
+    .btn-banner:hover svg { transform: translateX(4px); }
+    .btn-banner-solid {
+      background: white; color: var(--rose-gold); border: 1px solid white;
+    }
+    .btn-banner-solid:hover { background: var(--pale); }
+    .btn-banner-outline {
+      background: none; color: white; border: 1px solid rgba(255,255,255,0.4);
+    }
+    .btn-banner-outline:hover { border-color: white; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--text-dark);
+      padding: 80px 60px 40px;
+      color: rgba(255,255,255,0.5);
+    }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 60px; margin-bottom: 60px;
+    }
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300; font-size: 1.8rem;
+      color: white; margin-bottom: 16px;
+    }
+    .footer-brand span { color: var(--blush); }
+    .footer-desc {
+      font-size: 0.78rem; line-height: 1.9;
+      color: rgba(255,255,255,0.4); max-width: 280px;
+    }
+    .footer-col h4 {
+      font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--blush); margin-bottom: 20px;
+    }
+    .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-col ul a {
+      font-size: 0.78rem; color: rgba(255,255,255,0.45);
+      text-decoration: none; transition: color 0.3s;
+    }
+    .footer-col ul a:hover { color: var(--blush); }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08); padding-top: 28px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom p { font-size: 0.72rem; color: rgba(255,255,255,0.25); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity:0; transform: translateY(24px); }
+      to   { opacity:1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity:0; } to { opacity:1; }
+    }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    .reveal {
+      opacity:0; transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible { opacity:1; transform: translateY(0); }
+    .reveal-d1 { transition-delay: 0.1s; }
+    .reveal-d2 { transition-delay: 0.2s; }
+    .reveal-d3 { transition-delay: 0.3s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1024px) {
+      nav { padding: 20px 32px; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: 320px; }
+      .hero-left { padding: 60px 32px; }
+      #fluxo, #prazos, #decisoes, #encerramento { padding: 80px 32px; }
+      .canais-inner { grid-template-columns: 1fr; }
+      .canais-left, .canais-right { padding: 60px 32px; }
+      .canais-right { border-left: none; border-top: 1px solid var(--divider); }
+      .prazos-grid { grid-template-columns: repeat(2,1fr); }
+      .escalona-inner { grid-template-columns: 1fr; }
+      .escalona-left, .escalona-right { padding: 60px 32px; }
+      .banner { flex-direction: column; align-items: flex-start; }
+      footer { padding: 60px 32px 32px; }
+      .footer-grid { gap: 40px; }
+    }
+
+    @media (max-width: 768px) {
+      nav { padding: 18px 24px; }
+      .nav-links { display: none; }
+      .nav-toggle { display: flex; }
+      .mobile-menu { display: flex; }
+
+      .hero { grid-template-columns: 1fr; padding-top: 70px; }
+      .hero-left { padding: 48px 24px; }
+      .hero-left::after { display: none; }
+      .hero-right { min-height: 280px; padding: 40px 24px; }
+      .hero-stats { gap: 24px; }
+
+      #fluxo, #prazos, #decisoes, #encerramento { padding: 72px 24px; }
+      .fluxo-header { grid-template-columns: 1fr; gap: 24px; margin-bottom: 60px; }
+
+      /* Timeline goes single column on mobile */
+      .timeline::before { left: 26px; }
+      .tl-step { grid-template-columns: 52px 1fr; gap: 0; }
+      .tl-step:nth-child(odd)  .tl-content,
+      .tl-step:nth-child(even) .tl-content {
+        grid-column: 2; grid-row: 1;
+        text-align: left; padding-left: 24px; padding-right: 0;
+      }
+      .tl-step:nth-child(odd)  .tl-card { text-align: left; }
+      .tl-step:nth-child(odd)  .tl-card-chips,
+      .tl-step:nth-child(even) .tl-card-chips { justify-content: flex-start; }
+      .tl-center { grid-column: 1; grid-row: 1; align-items: flex-start; }
+      .tl-empty { display: none; }
+
+      .prazos-grid { grid-template-columns: 1fr 1fr; }
+
+      .decisoes-grid { grid-template-columns: 1fr; }
+
+      .encerra-grid { grid-template-columns: 1fr; }
+      .encerra-visual { display: none; }
+
+      .escalona-row { grid-template-columns: 44px 1fr; }
+      .escalona-prazo { display: none; }
+
+      .banner { padding: 60px 24px; }
+      .banner-right { flex-direction: column; width: 100%; }
+      .btn-banner { justify-content: center; }
+
+      footer { padding: 56px 24px 32px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 40px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; gap: 8px; }
+
+      .canais-left, .canais-right { padding: 60px 24px; }
+    }
+
+    @media (max-width: 480px) {
+      .prazos-grid { grid-template-columns: 1fr; }
+      .prazo-cell { padding: 32px 24px; }
+      .hero-stats { flex-wrap: wrap; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#fluxo" onclick="closeMenu()">Fluxo</a>
+  <a href="#canais" onclick="closeMenu()">Canais</a>
+  <a href="#prazos" onclick="closeMenu()">Prazos</a>
+  <a href="#decisoes" onclick="closeMenu()">Decisões</a>
+  <a href="#escalona" onclick="closeMenu()">Escalonamento</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">Candy<span>Care</span></a>
+  <ul class="nav-links">
+    <li><a href="#fluxo">Fluxo</a></li>
+    <li><a href="#canais">Canais</a></li>
+    <li><a href="#prazos">Prazos</a></li>
+    <li><a href="#decisoes">Decisões</a></li>
+    <li><a href="#escalona">Escalonamento</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">CandyCare — Operações</p>
+    <h1 class="hero-title">Fluxo de<br><em>Atendimento</em></h1>
+    <p class="hero-sub">
+      Do primeiro contato à resolução completa — cada etapa do nosso atendimento foi desenhada para garantir agilidade, empatia e satisfação real.
+    </p>
+    <div class="hero-stats">
+      <div>
+        <p class="hero-stat-num">6</p>
+        <p class="hero-stat-label">Etapas</p>
+      </div>
+      <div>
+        <p class="hero-stat-num">3</p>
+        <p class="hero-stat-label">Canais</p>
+      </div>
+      <div>
+        <p class="hero-stat-num">2h</p>
+        <p class="hero-stat-label">1ª Resposta</p>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-flow-preview">
+      <div class="hfp-node">
+        <p class="hfp-node-label">01</p>
+        <p class="hfp-node-text">Primeiro Contato</p>
+      </div>
+      <div class="hfp-arrow"></div>
+      <div class="hfp-node">
+        <p class="hfp-node-label">02</p>
+        <p class="hfp-node-text">Triagem</p>
+      </div>
+      <div class="hfp-arrow"></div>
+      <div class="hfp-node">
+        <p class="hfp-node-label">03</p>
+        <p class="hfp-node-text">Atendimento Ativo</p>
+      </div>
+      <div class="hfp-arrow"></div>
+      <div class="hfp-node">
+        <p class="hfp-node-label">04</p>
+        <p class="hfp-node-text">Resolução</p>
+      </div>
+      <div class="hfp-arrow"></div>
+      <div class="hfp-node">
+        <p class="hfp-node-label">05</p>
+        <p class="hfp-node-text">Confirmação</p>
+      </div>
+      <div class="hfp-arrow"></div>
+      <div class="hfp-node">
+        <p class="hfp-node-label">06</p>
+        <p class="hfp-node-text">Encerramento</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Atendimento humanizado</span>
+    <span class="marquee-item">Respostas em até 2h</span>
+    <span class="marquee-item">Satisfação garantida</span>
+    <span class="marquee-item">Transparência total</span>
+    <span class="marquee-item">Diabetes Friendly</span>
+    <span class="marquee-item">Feito com carinho</span>
+    <span class="marquee-item">Atendimento humanizado</span>
+    <span class="marquee-item">Respostas em até 2h</span>
+    <span class="marquee-item">Satisfação garantida</span>
+    <span class="marquee-item">Transparência total</span>
+    <span class="marquee-item">Diabetes Friendly</span>
+    <span class="marquee-item">Feito com carinho</span>
+  </div>
+</div>
+
+<!-- FLUXO TIMELINE -->
+<section id="fluxo">
+  <div class="fluxo-inner">
+    <div class="fluxo-header reveal">
+      <div>
+        <div class="deco-line"></div>
+        <p class="section-eyebrow">Passo a passo</p>
+        <h2 class="section-title">O fluxo<br>completo de<br><em>atendimento</em></h2>
+      </div>
+      <div class="fluxo-header-right">
+        <p>Cada etapa foi pensada para que nenhum cliente fique sem atenção. Do momento em que nos procura até a resolução final, você tem clareza de onde está no processo e qual o próximo passo.</p>
+        <br>
+        <p>Este fluxo se aplica a todos os canais: WhatsApp, Instagram e e-mail.</p>
+      </div>
+    </div>
+
+    <div class="timeline">
+
+      <!-- ETAPA 1 -->
+      <div class="tl-step reveal">
+        <div class="tl-content">
+          <div class="tl-card">
+            <p class="tl-card-tag">Etapa 01</p>
+            <h3 class="tl-card-title">Primeiro Contato</h3>
+            <p class="tl-card-body">O cliente entra em contato por qualquer canal disponível — WhatsApp, Instagram (DM ou comentário) ou e-mail. Toda mensagem recebida gera um registro interno e é lida dentro de 2 horas úteis.</p>
+            <div class="tl-card-chips">
+              <span class="chip">WhatsApp</span>
+              <span class="chip">Instagram</span>
+              <span class="chip">E-mail</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-center">
+          <div class="tl-node">
+            <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          </div>
+          <span class="tl-num">01</span>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- ETAPA 2 -->
+      <div class="tl-step reveal reveal-d1">
+        <div class="tl-empty"></div>
+        <div class="tl-center">
+          <div class="tl-node">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          </div>
+          <span class="tl-num">02</span>
+        </div>
+        <div class="tl-content">
+          <div class="tl-card">
+            <p class="tl-card-tag">Etapa 02</p>
+            <h3 class="tl-card-title">Triagem e Classificação</h3>
+            <p class="tl-card-body">A mensagem é lida e classificada em uma das categorias: dúvida sobre produto, pedido em andamento, reclamação ou sugestão. A prioridade é definida com base na urgência e no tipo de solicitação.</p>
+            <div class="tl-card-chips">
+              <span class="chip">Dúvida</span>
+              <span class="chip">Pedido</span>
+              <span class="chip">Reclamação</span>
+              <span class="chip">Sugestão</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 3 -->
+      <div class="tl-step reveal reveal-d2">
+        <div class="tl-content">
+          <div class="tl-card">
+            <p class="tl-card-tag">Etapa 03</p>
+            <h3 class="tl-card-title">Atendimento Ativo</h3>
+            <p class="tl-card-body">Nossa equipe entra em contato com uma resposta personalizada — nunca scripts genéricos. O cliente é orientado sobre os próximos passos, prazos e o que pode esperar da CandyCare.</p>
+            <div class="tl-card-chips">
+              <span class="chip">Resposta personalizada</span>
+              <span class="chip">Até 2h úteis</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-center">
+          <div class="tl-node">
+            <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+          </div>
+          <span class="tl-num">03</span>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- ETAPA 4 -->
+      <div class="tl-step reveal reveal-d1">
+        <div class="tl-empty"></div>
+        <div class="tl-center">
+          <div class="tl-node">
+            <svg viewBox="0 0 24 24"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+          </div>
+          <span class="tl-num">04</span>
+        </div>
+        <div class="tl-content">
+          <div class="tl-card">
+            <p class="tl-card-tag">Etapa 04</p>
+            <h3 class="tl-card-title">Resolução</h3>
+            <p class="tl-card-body">A solicitação é resolvida dentro do prazo acordado. Dúvidas simples são resolvidas na mesma conversa. Reclamações e trocas passam por análise interna com prazo de até 5 dias úteis para resposta definitiva.</p>
+            <div class="tl-card-chips">
+              <span class="chip">Dúvida: mesmo dia</span>
+              <span class="chip">Troca: até 5 dias úteis</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ETAPA 5 -->
+      <div class="tl-step reveal reveal-d2">
+        <div class="tl-content">
+          <div class="tl-card">
+            <p class="tl-card-tag">Etapa 05</p>
+            <h3 class="tl-card-title">Confirmação de Satisfação</h3>
+            <p class="tl-card-body">Após a resolução, confirmamos com o cliente se a situação foi resolvida de forma satisfatória. Caso contrário, o atendimento retorna para a etapa de resolução — sem burocracia e sem prazo adicional cobrado.</p>
+            <div class="tl-card-chips">
+              <span class="chip">Follow-up obrigatório</span>
+              <span class="chip">Reabertura sem custo</span>
+            </div>
+          </div>
+        </div>
+        <div class="tl-center">
+          <div class="tl-node">
+            <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <span class="tl-num">05</span>
+        </div>
+        <div class="tl-empty"></div>
+      </div>
+
+      <!-- ETAPA 6 -->
+      <div class="tl-step reveal reveal-d1">
+        <div class="tl-empty"></div>
+        <div class="tl-center">
+          <div class="tl-node">
+            <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+          </div>
+          <span class="tl-num">06</span>
+        </div>
+        <div class="tl-content">
+          <div class="tl-card">
+            <p class="tl-card-tag">Etapa 06</p>
+            <h3 class="tl-card-title">Encerramento & Registro</h3>
+            <p class="tl-card-body">O atendimento é encerrado com uma mensagem de agradecimento personalizada. O caso é registrado internamente para aprimorar nossos processos futuros. Feedbacks são valorizados e integrados ao nosso fluxo.</p>
+            <div class="tl-card-chips">
+              <span class="chip">Registro interno</span>
+              <span class="chip">Feedback integrado</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+  </div>
+</section>
+
+<!-- CANAIS -->
+<section id="canais">
+  <div class="canais-inner">
+    <div class="canais-left reveal">
+      <div class="deco-line"></div>
+      <p class="section-eyebrow">Onde estamos</p>
+      <h2 class="section-title">Canais de<br><em>Atendimento</em></h2>
+      <p class="section-body">Escolha o canal mais confortável para você. Todos os canais seguem o mesmo fluxo de atendimento e têm os mesmos prazos de resposta.</p>
+      <p class="section-body">Cada mensagem recebe atenção individual — sem filas numeradas, sem respostas automáticas genéricas.</p>
+    </div>
+    <div class="canais-right">
+      <div class="canal-item reveal">
+        <div class="canal-icon">
+          <svg viewBox="0 0 24 24"><path d="M3 5h2l3 9h10l2-7H8"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></svg>
+        </div>
+        <div>
+          <p class="canal-label">Canal principal</p>
+          <p class="canal-name">WhatsApp</p>
+          <p class="canal-desc">Canal preferencial para pedidos, dúvidas e trocas. Resposta garantida em até 2 horas úteis. Atendimento seg-sex 9h–18h e sábados 10h–14h.</p>
+        </div>
+      </div>
+      <div class="canal-item reveal reveal-d1">
+        <div class="canal-icon">
+          <svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <div>
+          <p class="canal-label">Redes sociais</p>
+          <p class="canal-name">Instagram</p>
+          <p class="canal-desc">Atendimento via Direct Message e comentários. Respondemos dúvidas gerais, novidades e reclamações. Monitorado diariamente durante horário comercial.</p>
+        </div>
+      </div>
+      <div class="canal-item reveal reveal-d2">
+        <div class="canal-icon">
+          <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <div>
+          <p class="canal-label">Formal</p>
+          <p class="canal-name">E-mail</p>
+          <p class="canal-desc">Para solicitações formais, documentação de reclamações e casos que exigem registros escritos. Prazo de resposta de até 24 horas úteis. contato@candycare.com.br</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRAZOS / SLA -->
+<section id="prazos">
+  <div class="prazos-inner">
+    <div class="prazos-header reveal">
+      <div class="deco-line"></div>
+      <p class="section-eyebrow">Compromissos de tempo</p>
+      <h2 class="section-title">Prazos de<br><em>resposta</em></h2>
+    </div>
+    <div class="prazos-grid reveal">
+      <div class="prazo-cell">
+        <p class="prazo-big">2h</p>
+        <p class="prazo-unit">Dias úteis</p>
+        <p class="prazo-label">Primeira Resposta</p>
+        <p class="prazo-desc">Tempo máximo para o primeiro retorno via WhatsApp e Instagram durante horário comercial.</p>
+      </div>
+      <div class="prazo-cell">
+        <p class="prazo-big">24h</p>
+        <p class="prazo-unit">Dias úteis</p>
+        <p class="prazo-label">Resposta por E-mail</p>
+        <p class="prazo-desc">Toda mensagem recebida por e-mail ou fora do horário comercial é respondida no prazo de um dia útil.</p>
+      </div>
+      <div class="prazo-cell">
+        <p class="prazo-big">48h</p>
+        <p class="prazo-unit">Dias úteis</p>
+        <p class="prazo-label">Resolução Simples</p>
+        <p class="prazo-desc">Dúvidas sobre produtos, composição, disponibilidade e status de pedido são resolvidas em até 48 horas.</p>
+      </div>
+      <div class="prazo-cell">
+        <p class="prazo-big">5</p>
+        <p class="prazo-unit">Dias úteis</p>
+        <p class="prazo-label">Trocas e Reclamações</p>
+        <p class="prazo-desc">Situações que exigem análise interna, como trocas, avarias e reembolsos, têm prazo máximo de 5 dias úteis.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DECISÕES / RAMIFICAÇÕES -->
+<section id="decisoes">
+  <div class="decisoes-inner">
+    <div class="decisoes-header reveal">
+      <div class="deco-line"></div>
+      <p class="section-eyebrow">Pontos de decisão</p>
+      <h2 class="section-title">Como tratamos<br>cada <em>situação</em></h2>
+      <p class="section-body" style="max-width:500px; margin: 0 auto;">Dependendo do tipo de solicitação, o fluxo de atendimento segue caminhos diferentes — sempre com o objetivo de resolver da forma mais eficiente possível.</p>
+    </div>
+    <div class="decisoes-grid">
+      <div class="decisao-card reveal">
+        <p class="decisao-num">A</p>
+        <p class="decisao-tag">Tipo de solicitação</p>
+        <h3 class="decisao-title">Dúvidas sobre Produtos</h3>
+        <p class="decisao-body">Perguntas sobre ingredientes, composição do Isomalte, validade, armazenamento ou disponibilidade de sabores.</p>
+        <div class="decisao-steps">
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Resposta imediata pelo mesmo canal</span></div>
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Informações técnicas enviadas se necessário</span></div>
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Encerramento com confirmação de satisfação</span></div>
+        </div>
+      </div>
+      <div class="decisao-card reveal reveal-d1">
+        <p class="decisao-num">B</p>
+        <p class="decisao-tag">Tipo de solicitação</p>
+        <h3 class="decisao-title">Pedidos e Entregas</h3>
+        <p class="decisao-body">Acompanhamento de pedido, status de envio, prazo de entrega, produto não recebido ou entrega incompleta.</p>
+        <div class="decisao-steps">
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Consulta imediata ao status do pedido</span></div>
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Contato com transportadora se aplicável</span></div>
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Reenvio ou reembolso confirmados em 48h</span></div>
+        </div>
+      </div>
+      <div class="decisao-card reveal reveal-d2">
+        <p class="decisao-num">C</p>
+        <p class="decisao-tag">Tipo de solicitação</p>
+        <h3 class="decisao-title">Reclamações e Trocas</h3>
+        <p class="decisao-body">Produto com defeito, avaria na embalagem, produto errado ou qualquer insatisfação com a qualidade recebida.</p>
+        <div class="decisao-steps">
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Solicitação de fotos do produto e embalagem</span></div>
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Análise interna em até 48 horas</span></div>
+          <div class="decisao-step"><div class="decisao-step-dot"></div><span>Reenvio prioritário ou reembolso em 10 dias</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ESCALONAMENTO -->
+<section id="escalona">
+  <div class="escalona-inner">
+    <div class="escalona-left reveal">
+      <div class="deco-line" style="background: var(--blush);"></div>
+      <p class="section-eyebrow">Hierarquia interna</p>
+      <h2 class="section-title">Níveis de<br><em>Escalonamento</em></h2>
+      <p class="section-body">Quando um atendimento requer atenção especial ou não pode ser resolvido no nível inicial, existe um caminho claro de escalonamento — sem deixar o cliente sem resposta.</p>
+    </div>
+    <div class="escalona-right">
+      <div class="escalona-row reveal">
+        <div class="escalona-level">N1</div>
+        <div>
+          <p class="escalona-name">Atendimento Padrão</p>
+          <p class="escalona-desc">Dúvidas gerais, confirmação de pedidos, informações sobre produtos e solicitações rotineiras. Resolvido diretamente pela equipe de atendimento.</p>
+        </div>
+        <div class="escalona-prazo">2–24h<span>tempo de resposta</span></div>
+      </div>
+      <div class="escalona-row reveal reveal-d1">
+        <div class="escalona-level">N2</div>
+        <div>
+          <p class="escalona-name">Casos Complexos</p>
+          <p class="escalona-desc">Reclamações sobre qualidade, pedidos com problemas logísticos, solicitações de troca e análise de avarias. Requer coleta de evidências e análise interna.</p>
+        </div>
+        <div class="escalona-prazo">48–72h<span>tempo de análise</span></div>
+      </div>
+      <div class="escalona-row reveal reveal-d2">
+        <div class="escalona-level">N3</div>
+        <div>
+          <p class="escalona-name">Decisão de Gestão</p>
+          <p class="escalona-desc">Situações que envolvem reembolso acima do padrão, clientes insatisfeitos após N2 ou casos que exigem decisão estratégica. Tratados pela gestão da CandyCare.</p>
+        </div>
+        <div class="escalona-prazo">5 dias<span>prazo máximo</span></div>
+      </div>
+      <div class="escalona-row reveal reveal-d1">
+        <div class="escalona-level">◇</div>
+        <div>
+          <p class="escalona-name">Reabertura de Caso</p>
+          <p class="escalona-desc">Se o cliente não ficou satisfeito após o encerramento, o caso pode ser reaberto sem burocracia, voltando ao N2 ou N3 conforme necessário — sem prazo adicional cobrado.</p>
+        </div>
+        <div class="escalona-prazo">imediato<span>prioridade</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ENCERRAMENTO / CHECKLIST -->
+<section id="encerramento">
+  <div class="encerra-inner">
+    <div class="encerra-grid">
+      <div class="encerra-visual reveal">
+        <div class="encerra-visual-box">
+          <p class="encerra-big-text">✦</p>
+          <div class="encerra-icon">
+            <svg viewBox="0 0 120 120" fill="none">
+              <circle cx="60" cy="60" r="50" stroke="#f2c4c4" stroke-width="0.6"/>
+              <circle cx="60" cy="60" r="35" stroke="#e8b4b0" stroke-width="0.5" stroke-dasharray="4 6"/>
+              <path d="M60 80 L60 50" stroke="#c8956c" stroke-width="1"/>
+              <path d="M48 55 C48 46 60 40 60 50 C60 40 72 46 72 55 C72 65 60 74 60 74 C60 74 48 65 48 55Z" stroke="#c8956c" stroke-width="0.8" fill="none"/>
+              <circle cx="60" cy="60" r="3" fill="#f2c4c4" opacity="0.6"/>
+              <circle cx="38" cy="42" r="1.5" fill="#e8b4b0" opacity="0.5"/>
+              <circle cx="82" cy="78" r="1.5" fill="#c8956c" opacity="0.4"/>
+            </svg>
+          </div>
+          <p class="encerra-caption">Encerramento com cuidado</p>
+        </div>
+      </div>
+      <div>
+        <div class="deco-line"></div>
+        <p class="section-eyebrow">Qualidade do encerramento</p>
+        <h2 class="section-title">O que garantimos<br>em cada <em>fechamento</em></h2>
+        <div class="encerra-checklist">
+          <div class="encerra-check reveal">
+            <div class="check-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p class="check-label">Protocolo 01</p>
+              <p class="check-title">Confirmação de resolução</p>
+              <p class="check-desc">Sempre perguntamos se o cliente está satisfeito antes de encerrar o atendimento. Nenhum caso é fechado sem confirmação.</p>
+            </div>
+          </div>
+          <div class="encerra-check reveal reveal-d1">
+            <div class="check-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p class="check-label">Protocolo 02</p>
+              <p class="check-title">Mensagem personalizada de agradecimento</p>
+              <p class="check-desc">Encerramos com uma mensagem calorosa, nunca genérica. O cliente sabe que foi ouvido de verdade.</p>
+            </div>
+          </div>
+          <div class="encerra-check reveal reveal-d2">
+            <div class="check-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p class="check-label">Protocolo 03</p>
+              <p class="check-title">Registro e aprendizado</p>
+              <p class="check-desc">Todo caso é registrado internamente. Reclamações recorrentes alimentam melhorias diretas no produto e no processo.</p>
+            </div>
+          </div>
+          <div class="encerra-check reveal reveal-d1">
+            <div class="check-icon">
+              <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <div>
+              <p class="check-label">Protocolo 04</p>
+              <p class="check-title">Reabertura sempre disponível</p>
+              <p class="check-desc">Se o problema voltar ou a solução não funcionar, o cliente pode reabrir o caso a qualquer momento sem burocracia.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER CTA -->
+<div class="banner">
+  <div class="banner-left">
+    <p>Precisa de atendimento<br><em>agora?</em></p>
+    <p>Nossa equipe está disponível seg-sex 9h–18h e sábados 10h–14h. Entre em contato pelo canal que preferir.</p>
+  </div>
+  <div class="banner-right">
+    <a href="https://wa.me/5511999999999" class="btn-banner btn-banner-solid" target="_blank">
+      Falar pelo WhatsApp
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="mailto:contato@candycare.com.br" class="btn-banner btn-banner-outline">
+      Enviar e-mail
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand">Candy<span>Care</span></p>
+      <p class="footer-desc">Sabor que cuida. Doces premium sem açúcar, desenvolvidos com Isomalte para quem merece o melhor.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="politica_atedimento.html">Política de Atendimento</a></li>
+        <li><a href="central-reclamacoes.html">Central de Reclamações</a></li>
+        <li><a href="etica-candycare.html">Código de Ética da CandyCare</a></li>
+        <li><a href="organograma.html">Organograma Setorial</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="mailto:contato@candycare.com.br">contato@candycare.com.br</a></li>
+        <li><a href="https://www.instagram.com/candyzcare">@candycare</a></li>
+        <li><a href="https://wa.me/5511999999999">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CandyCare. Todos os direitos reservados.</p>
+    <p>Feito com ✦ e muito Isomalte</p>
+  </div>
+</footer>
+
+<script>
+  // ── CURSOR ──
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  let mx=0, my=0, rx=0, ry=0;
+
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx-4}px,${my-4}px)`;
+    });
+    function animateRing() {
+      rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+      ring.style.transform = `translate(${rx-14}px,${ry-14}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+  }
+
+  // ── MOBILE MENU ──
+  const navToggle  = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMenu() {
+    navToggle.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.07 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+<!-- Botão de Voltar -->
+<a href="index.html"botao-voltar">
+  ← Voltar
+</a>
+
+<style>
+  .botao-voltar{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+    border-radius: 30px;
+
+    background-color: #f9e8e6;
+    color: #2a1f1e;
+
+    border: 2px solid #f2c4c4;
+
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(42, 31, 30, 0.12);
+
+    z-index: 999;
+  }
+
+  .botao-voltar:hover{
+    background-color: #f2c4c4;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(42, 31, 30, 0.18);
+  }
+
+  .botao-voltar:active{
+    transform: scale(0.98);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px){
+    .botao-voltar{
+      bottom: 15px;
+      right: 15px;
+
+      padding: 10px 18px;
+      font-size: 14px;
+    }
+  }
+</style>
+</body>
+</html>

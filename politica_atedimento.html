@@ -677,8 +677,10 @@
       footer { padding: 60px 24px 32px; }
     }
   </style>
+ 
+
+
 </head>
-<body>
 
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
@@ -1116,6 +1118,14 @@
     </div>
     
     <div class="footer-col">
+      <h4>Navegação</h4>
+    <ul>
+        <li><a href="fluxo-atendimento.html">Fluxo de Atendimento</a></li>
+        <li><a href="central-reclamacoes.html">Central de Reclamações</a></li>
+        <li><a href="etica-candycare.html">Código de Ética da CandyCare</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
       <h4>Contato</h4>
       <ul>
         <li><a href="mailto:contato@candycare.com.br">contato@candycare.com.br</a></li>
@@ -1176,5 +1186,75 @@
 
   reveals.forEach(r => obs.observe(r));
 </script>
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('revealed'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('[data-reveal]').forEach(el => observer.observe(el));
+</script>
+<!-- Botão de Voltar -->
+<a href="index.html" class="botao-voltar">
+  ← Voltar
+</a>
+
+<style>
+  .botao-voltar{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+    border-radius: 30px;
+
+    background-color: #f9e8e6;
+    color: #2a1f1e;
+
+    border: 2px solid #f2c4c4;
+
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(42, 31, 30, 0.12);
+
+    z-index: 999;
+  }
+
+  .botao-voltar:hover{
+    background-color: #f2c4c4;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(42, 31, 30, 0.18);
+  }
+
+  .botao-voltar:active{
+    transform: scale(0.98);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px){
+    .botao-voltar{
+      bottom: 15px;
+      right: 15px;
+
+      padding: 10px 18px;
+      font-size: 14px;
+    }
+  }
+</style>
 </body>
 </html>
