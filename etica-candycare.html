@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <link rel="icon" href="icon/icon_candycare 4.0.png" type="image/png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CandyCare — Código de Ética Profissional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #f2c4c4;
+    --nude: #e8b4b0;
+    --rose-gold: #c8956c;
+    --pale: #fdf5f3;
+    --white: #ffffff;
+    --soft-pink: #f9e8e6;
+    --text-dark: #2a1f1e;
+    --text-mid: #7a5c58;
+    --text-light: #b89490;
+    --gold: #c9a87c;
+    --divider: rgba(200,149,108,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--pale);
+    color: var(--text-dark);
+    font-weight: 300;
+    overflow-x: hidden;
+  }
+
+  /* ── CURSOR ── */
+  @media (pointer: fine) { * { cursor: none; } }
+  #cursor, #cursor-ring { display: none; }
+  @media (pointer: fine) {
+    #cursor {
+      display: block; width: 8px; height: 8px;
+      background: var(--rose-gold); border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      transition: transform 0.15s ease;
+    }
+    #cursor-ring {
+      display: block; width: 28px; height: 28px;
+      border: 1px solid var(--blush); border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transition: transform 0.4s ease, opacity 0.3s;
+    }
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 20px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(253,245,243,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--divider);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 1.6rem;
+    letter-spacing: 0.12em; color: var(--text-dark);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--rose-gold); }
+  .nav-links { display: flex; gap: 40px; list-style: none; }
+  .nav-links a {
+    font-family: 'Jost', sans-serif; font-weight: 200;
+    font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--text-mid);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--rose-gold); }
+
+  .nav-toggle {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px; z-index: 200;
+  }
+  .nav-toggle span {
+    display: block; width: 24px; height: 1px;
+    background: var(--text-dark); transition: all 0.3s ease; transform-origin: center;
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(253,245,243,0.98); backdrop-filter: blur(16px);
+    z-index: 150; flex-direction: column;
+    align-items: center; justify-content: center; gap: 40px;
+    opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+  }
+  .mobile-menu.open { opacity: 1; pointer-events: all; display: flex; }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; font-weight: 300;
+    color: var(--text-dark); text-decoration: none;
+    letter-spacing: 0.1em; transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--rose-gold); }
+
+  /* ── SECTIONS ── */
+  section { min-height: 100vh; }
+
+  /* ── HERO ── */
+  #home {
+    display: grid; grid-template-columns: 1fr 1fr;
+    min-height: 100vh; padding-top: 80px;
+  }
+  .hero-left {
+    padding: 80px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero-tag {
+    font-size: 0.65rem; letter-spacing: 0.3em;
+    text-transform: uppercase; color: var(--rose-gold);
+    margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2.8rem, 5vw, 4.8rem);
+    font-weight: 300; line-height: 1.12;
+    color: var(--text-dark); margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+  }
+  .hero-title em { font-style: italic; color: var(--rose-gold); }
+  .hero-sub {
+    font-size: 0.88rem; line-height: 1.9;
+    color: var(--text-mid); max-width: 400px;
+    margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+  }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 12px;
+    padding: 16px 36px; border: 1px solid var(--rose-gold);
+    color: var(--rose-gold); font-family: 'Jost', sans-serif;
+    font-weight: 300; font-size: 0.72rem;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    text-decoration: none; transition: all 0.35s ease;
+    width: fit-content;
+    opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+  }
+  .btn-primary:hover { background: var(--rose-gold); color: white; gap: 20px; }
+  .btn-primary svg { width: 14px; }
+
+  .hero-right {
+    background: var(--soft-pink);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-illustration {
+    width: 380px; height: 380px;
+    opacity: 0; animation: fadeIn 1.2s 0.5s forwards;
+  }
+  .floating-badge {
+    position: absolute; bottom: 60px; left: -20px;
+    background: white; border: 1px solid var(--divider);
+    padding: 18px 24px;
+    opacity: 0; animation: fadeUp 0.8s 1s forwards;
+    box-shadow: 0 8px 32px rgba(200,149,108,0.1);
+  }
+  .floating-badge p:first-child {
+    font-size: 0.62rem; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--text-light); margin-bottom: 4px;
+  }
+  .floating-badge p:last-child {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem; color: var(--text-dark);
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-wrap {
+    background: var(--rose-gold); padding: 14px 0;
+    overflow: hidden; white-space: nowrap;
+  }
+  .marquee-track {
+    display: inline-block;
+    animation: marquee 18s linear infinite;
+  }
+  .marquee-item {
+    display: inline-block; font-size: 0.62rem;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: white; padding: 0 32px;
+  }
+  .marquee-item::after { content: '✦'; margin-left: 32px; opacity: 0.6; }
+
+  /* ── SOBRE ── */
+  #sobre {
+    min-height: auto; display: grid;
+    grid-template-columns: 1fr 1fr; gap: 0;
+  }
+  .sobre-visual {
+    background: var(--blush); padding: 100px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative;
+  }
+  .sobre-deco {
+    position: absolute; top: 40px; right: 40px;
+    width: 80px; opacity: 0.3;
+  }
+  .sobre-content {
+    padding: 100px 60px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+
+  .section-eyebrow {
+    font-size: 0.62rem; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--rose-gold);
+    margin-bottom: 20px;
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 3.5vw, 3.2rem);
+    font-weight: 300; line-height: 1.2;
+    color: var(--text-dark); margin-bottom: 28px;
+  }
+  .section-title em { font-style: italic; color: var(--rose-gold); }
+  .section-body {
+    font-size: 0.85rem; line-height: 2;
+    color: var(--text-mid); margin-bottom: 20px;
+  }
+
+  .values-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px; margin-top: 48px;
+  }
+  .value-card { border-top: 1px solid var(--divider); padding-top: 20px; }
+  .value-card p:first-child {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem; font-weight: 400;
+    color: var(--text-dark); margin-bottom: 8px;
+  }
+  .value-card p:last-child {
+    font-size: 0.75rem; line-height: 1.7; color: var(--text-light);
+  }
+
+  /* ── PILARES (como Isomalte) ── */
+  #pilares {
+    min-height: auto; padding: 120px 60px;
+    background: var(--white); text-align: center;
+  }
+  .pilares-inner { max-width: 900px; margin: 0 auto; }
+
+  .iso-pill {
+    display: inline-block; border: 1px solid var(--blush);
+    padding: 8px 20px; font-size: 0.62rem;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: var(--rose-gold); margin-bottom: 32px;
+  }
+
+  .pilares-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 64px; text-align: left;
+  }
+  .pilar-card {
+    background: var(--pale); padding: 48px 36px;
+    border: 1px solid var(--divider);
+    transition: background 0.4s, transform 0.4s;
+    position: relative; overflow: hidden;
+  }
+  .pilar-card::after {
+    content: ''; position: absolute;
+    bottom: 0; left: 0; right: 0; height: 2px;
+    background: var(--rose-gold);
+    transform: scaleX(0); transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .pilar-card:hover { background: var(--soft-pink); }
+  .pilar-card:hover::after { transform: scaleX(1); }
+
+  .pilar-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem; font-weight: 300;
+    color: var(--blush); line-height: 1; margin-bottom: 16px;
+  }
+  .pilar-icon {
+    width: 40px; height: 40px; color: var(--rose-gold); margin-bottom: 20px;
+  }
+  .pilar-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 300;
+    color: var(--text-dark); margin-bottom: 12px;
+  }
+  .pilar-card p {
+    font-size: 0.8rem; line-height: 1.9; color: var(--text-mid);
+  }
+
+  /* ── DEVERES (como Produtos) ── */
+  #deveres {
+    min-height: auto; padding: 120px 60px;
+    background: var(--pale);
+  }
+  .deveres-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 64px;
+  }
+  .deveres-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; margin-bottom: 64px;
+  }
+  .dever-card {
+    background: white; border: 1px solid var(--divider);
+    overflow: hidden;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+  }
+  .dever-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 48px rgba(200,149,108,0.12);
+  }
+  .dever-img {
+    height: 180px; background: var(--soft-pink);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .dever-img svg {
+    width: 80px; opacity: 0.65;
+    transition: transform 0.5s ease;
+  }
+  .dever-card:hover .dever-img svg { transform: scale(1.1) rotate(4deg); }
+
+  .dever-info { padding: 24px; }
+  .dever-info h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.2rem; font-weight: 400;
+    color: var(--text-dark); margin-bottom: 6px;
+  }
+  .dever-info p {
+    font-size: 0.75rem; line-height: 1.7; color: var(--text-light);
+  }
+  .dever-tag {
+    display: inline-block; margin-top: 12px;
+    font-size: 0.58rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--rose-gold);
+    border: 1px solid var(--blush); padding: 4px 10px;
+  }
+
+  /* ── PRINCÍPIOS (como Público) ── */
+  #principios {
+    min-height: auto; padding: 120px 60px;
+    background: var(--soft-pink);
+  }
+  .principios-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 2px; margin-top: 64px;
+  }
+  .principio-card {
+    background: white; padding: 48px 36px;
+    transition: background 0.4s;
+    position: relative;
+  }
+  .principio-card:hover { background: var(--pale); }
+  .principio-icon { width: 48px; height: 48px; margin-bottom: 24px; }
+  .principio-card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; font-weight: 300;
+    color: var(--text-dark); margin-bottom: 12px;
+  }
+  .principio-card p {
+    font-size: 0.8rem; line-height: 1.9; color: var(--text-mid);
+  }
+
+  /* ── VEDAÇÕES ── */
+  #vedacoes {
+    min-height: auto; padding: 120px 60px;
+    background: var(--white);
+  }
+  .iso-compare {
+    display: grid; grid-template-columns: 1fr auto 1fr;
+    gap: 40px; align-items: start;
+    margin-top: 64px; text-align: left;
+  }
+  .iso-col {
+    padding: 36px; border: 1px solid var(--divider);
+  }
+  .iso-col.highlight {
+    background: var(--soft-pink); border-color: var(--blush);
+  }
+  .iso-col-label {
+    font-size: 0.6rem; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--text-light); margin-bottom: 16px;
+  }
+  .iso-col-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; font-weight: 300;
+    color: var(--text-dark); margin-bottom: 20px;
+  }
+  .iso-col-title.gold { color: var(--rose-gold); }
+  .iso-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
+  .iso-list li {
+    font-size: 0.8rem; line-height: 1.6; color: var(--text-mid);
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .iso-list li::before {
+    content: '—'; color: var(--rose-gold); flex-shrink: 0; margin-top: 1px;
+  }
+  .iso-vs {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic; font-size: 1.2rem;
+    color: var(--text-light); align-self: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--text-dark);
+    padding: 80px 60px 40px;
+    color: rgba(255,255,255,0.5);
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px; margin-bottom: 60px;
+  }
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300; font-size: 1.8rem;
+    color: white; margin-bottom: 16px;
+  }
+  .footer-brand span { color: var(--blush); }
+  .footer-desc {
+    font-size: 0.78rem; line-height: 1.9;
+    color: rgba(255,255,255,0.4); max-width: 280px;
+  }
+  .footer-col h4 {
+    font-size: 0.6rem; letter-spacing: 0.28em;
+    text-transform: uppercase; color: var(--blush); margin-bottom: 20px;
+  }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul a {
+    font-size: 0.78rem; color: rgba(255,255,255,0.45);
+    text-decoration: none; transition: color 0.3s;
+  }
+  .footer-col ul a:hover { color: var(--blush); }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.08);
+    padding-top: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .footer-bottom p { font-size: 0.72rem; color: rgba(255,255,255,0.25); }
+
+  /* ── DECORATIVE ── */
+  .deco-line {
+    width: 40px; height: 1px;
+    background: var(--rose-gold); margin-bottom: 32px;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 20px 32px; }
+    .hero-left { padding: 60px 32px; }
+    .hero-illustration { width: 280px; height: 280px; }
+    .floating-badge { left: 12px; bottom: 32px; }
+    #sobre { grid-template-columns: 1fr 1fr; }
+    .sobre-visual, .sobre-content { padding: 80px 32px; }
+    .values-grid { grid-template-columns: 1fr 1fr; }
+    #pilares, #deveres, #principios, #vedacoes { padding: 80px 32px; }
+    .pilares-grid, .deveres-grid, .principios-grid { grid-template-columns: repeat(2, 1fr); }
+    .iso-compare { gap: 20px; }
+    .iso-col { padding: 24px; }
+    footer { padding: 60px 32px 32px; }
+    .footer-grid { gap: 40px; }
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .mobile-menu { display: flex; }
+    #home { grid-template-columns: 1fr; padding-top: 70px; min-height: auto; }
+    .hero-left { padding: 56px 24px 40px; order: 1; }
+    .hero-sub { max-width: 100%; }
+    .hero-right { order: 2; min-height: 300px; }
+    .hero-illustration { width: 220px; height: 220px; }
+    .floating-badge { left: 16px; bottom: 20px; padding: 14px 18px; }
+    #sobre { grid-template-columns: 1fr; min-height: auto; }
+    .sobre-visual { padding: 72px 24px 56px; min-height: 300px; }
+    .sobre-content { padding: 56px 24px; }
+    .values-grid { grid-template-columns: 1fr; gap: 16px; margin-top: 32px; }
+    #pilares, #deveres, #principios, #vedacoes { padding: 72px 24px; }
+    .pilares-grid, .deveres-grid, .principios-grid { grid-template-columns: 1fr; }
+    .iso-compare { grid-template-columns: 1fr; gap: 16px; }
+    .iso-vs { text-align: center; padding: 8px 0; }
+    .deveres-header { flex-direction: column; align-items: flex-start; gap: 12px; margin-bottom: 40px; }
+    footer { padding: 48px 24px 32px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#home">Candy<span>Care</span></a>
+  <ul class="nav-links">
+    <li><a href="#home">Início</a></li>
+    <li><a href="#sobre">Nossa Ética</a></li>
+    <li><a href="#pilares">Pilares</a></li>
+    <li><a href="#deveres">Deveres</a></li>
+    <li><a href="#principios">Princípios</a></li>
+    <li><a href="#vedacoes">Vedações</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#home" onclick="closeMenu()">Início</a>
+  <a href="#sobre" onclick="closeMenu()">Nossa Ética</a>
+  <a href="#pilares" onclick="closeMenu()">Pilares</a>
+  <a href="#deveres" onclick="closeMenu()">Deveres</a>
+  <a href="#principios" onclick="closeMenu()">Princípios</a>
+  <a href="#vedacoes" onclick="closeMenu()">Vedações</a>
+</div>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-left">
+    <p class="hero-tag">Código de Ética Profissional — CandyCare</p>
+    <h1 class="hero-title">
+      Sabor que cuida,<br>conduta que<br><em>inspira</em>
+    </h1>
+    <p class="hero-sub">
+      Na CandyCare, acreditamos que a excelência começa de dentro para fora. Nosso Código de Ética é o compromisso que assumimos com cada cliente, colaborador e parceiro — porque cuidar vai além dos nossos produtos.
+    </p>
+    <a class="btn-primary" href="#sobre">
+      Conheça nossos valores
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M5 12h14M13 6l6 6-6 6"/>
+      </svg>
+    </a>
+  </div>
+  <div class="hero-right">
+    <!-- Ilustração: balança delicada no estilo CandyCare -->
+    <svg class="hero-illustration" viewBox="0 0 380 380" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Círculo externo decorativo -->
+      <circle cx="190" cy="190" r="160" stroke="rgba(242,196,196,0.3)" stroke-width="1"/>
+      <circle cx="190" cy="190" r="130" stroke="rgba(242,196,196,0.18)" stroke-width="1"/>
+      <!-- Haste vertical -->
+      <line x1="190" y1="90" x2="190" y2="290" stroke="#c8956c" stroke-width="1.5"/>
+      <!-- Barra horizontal -->
+      <line x1="110" y1="148" x2="270" y2="148" stroke="#c8956c" stroke-width="1.5"/>
+      <!-- Prato esquerdo -->
+      <path d="M100 148 Q110 178 135 178 Q160 178 148 148" stroke="#e8b4b0" stroke-width="1.2" fill="none"/>
+      <line x1="110" y1="148" x2="135" y2="178" stroke="rgba(200,149,108,0.4)" stroke-width="1"/>
+      <line x1="148" y1="148" x2="135" y2="178" stroke="rgba(200,149,108,0.4)" stroke-width="1"/>
+      <!-- Prato direito -->
+      <path d="M232 148 Q242 178 267 178 Q292 178 280 148" stroke="#e8b4b0" stroke-width="1.2" fill="none"/>
+      <line x1="242" y1="148" x2="267" y2="178" stroke="rgba(200,149,108,0.4)" stroke-width="1"/>
+      <line x1="280" y1="148" x2="267" y2="178" stroke="rgba(200,149,108,0.4)" stroke-width="1"/>
+      <!-- Topo ornamental -->
+      <circle cx="190" cy="90" r="7" stroke="#c8956c" stroke-width="1.2" fill="none"/>
+      <circle cx="190" cy="90" r="3" fill="rgba(200,149,108,0.5)"/>
+      <!-- Base -->
+      <path d="M160 290 L220 290" stroke="#c8956c" stroke-width="1.5"/>
+      <path d="M170 290 L170 302 L210 302 L210 290" stroke="rgba(200,149,108,0.5)" stroke-width="1"/>
+      <!-- Florinhas decorativas CandyCare -->
+      <circle cx="135" cy="163" r="2.5" fill="rgba(242,196,196,0.6)"/>
+      <circle cx="267" cy="163" r="2.5" fill="rgba(242,196,196,0.6)"/>
+      <!-- Cantos decorativos -->
+      <path d="M50 50 L68 50 L68 68" stroke="rgba(242,196,196,0.35)" stroke-width="1" fill="none"/>
+      <path d="M330 50 L312 50 L312 68" stroke="rgba(242,196,196,0.35)" stroke-width="1" fill="none"/>
+      <path d="M50 330 L68 330 L68 312" stroke="rgba(242,196,196,0.35)" stroke-width="1" fill="none"/>
+      <path d="M330 330 L312 330 L312 312" stroke="rgba(242,196,196,0.35)" stroke-width="1" fill="none"/>
+      <!-- Estrelinhas ✦ -->
+      <text x="75" y="200" font-family="serif" font-size="10" fill="rgba(200,149,108,0.3)">✦</text>
+      <text x="295" y="200" font-family="serif" font-size="10" fill="rgba(200,149,108,0.3)">✦</text>
+      <text x="185" y="340" font-family="serif" font-size="10" fill="rgba(200,149,108,0.3)">✦</text>
+    </svg>
+    <div class="floating-badge">
+      <p>Desde sempre</p>
+      <p>Sabor que cuida ✦</p>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Integridade</span>
+    <span class="marquee-item">Responsabilidade</span>
+    <span class="marquee-item">Transparência</span>
+    <span class="marquee-item">Respeito</span>
+    <span class="marquee-item">Cuidado</span>
+    <span class="marquee-item">Qualidade</span>
+    <span class="marquee-item">Confiança</span>
+    <span class="marquee-item">Integridade</span>
+    <span class="marquee-item">Responsabilidade</span>
+    <span class="marquee-item">Transparência</span>
+    <span class="marquee-item">Respeito</span>
+    <span class="marquee-item">Cuidado</span>
+    <span class="marquee-item">Qualidade</span>
+    <span class="marquee-item">Confiança</span>
+  </div>
+</div>
+
+<!-- SOBRE / NOSSA ÉTICA -->
+<section id="sobre">
+  <div class="sobre-visual">
+    <!-- SVG livro/caderno no estilo CandyCare -->
+    <svg viewBox="0 0 300 360" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%; max-width:300px; margin: 0 auto; display:block;">
+      <rect x="40" y="30" width="220" height="300" rx="4" stroke="rgba(200,149,108,0.6)" stroke-width="1.5"/>
+      <rect x="52" y="44" width="196" height="272" rx="2" stroke="rgba(200,149,108,0.3)" stroke-width="1"/>
+      <!-- Linhas de texto -->
+      <line x1="72" y1="90" x2="228" y2="90" stroke="rgba(200,149,108,0.55)" stroke-width="1"/>
+      <line x1="72" y1="114" x2="228" y2="114" stroke="rgba(200,149,108,0.38)" stroke-width="1"/>
+      <line x1="72" y1="138" x2="228" y2="138" stroke="rgba(200,149,108,0.38)" stroke-width="1"/>
+      <line x1="72" y1="162" x2="200" y2="162" stroke="rgba(200,149,108,0.3)" stroke-width="1"/>
+      <line x1="72" y1="186" x2="218" y2="186" stroke="rgba(200,149,108,0.25)" stroke-width="1"/>
+      <line x1="72" y1="210" x2="180" y2="210" stroke="rgba(200,149,108,0.25)" stroke-width="1"/>
+      <line x1="72" y1="234" x2="210" y2="234" stroke="rgba(200,149,108,0.2)" stroke-width="1"/>
+      <line x1="72" y1="258" x2="190" y2="258" stroke="rgba(200,149,108,0.2)" stroke-width="1"/>
+      <!-- Lombada -->
+      <line x1="64" y1="30" x2="64" y2="330" stroke="rgba(200,149,108,0.7)" stroke-width="2.5"/>
+      <!-- Ornamento central -->
+      <circle cx="150" cy="68" r="10" stroke="rgba(200,149,108,0.5)" stroke-width="1" fill="none"/>
+      <circle cx="150" cy="68" r="4" fill="rgba(200,149,108,0.35)"/>
+      <!-- Decorativo cantos -->
+      <path d="M40 30 L58 30 L58 48" stroke="rgba(242,196,196,0.5)" stroke-width="1" fill="none"/>
+      <path d="M260 30 L242 30 L242 48" stroke="rgba(242,196,196,0.5)" stroke-width="1" fill="none"/>
+    </svg>
+  </div>
+  <div class="sobre-content">
+    <p class="section-eyebrow reveal">Nossa Ética</p>
+    <h2 class="section-title reveal">
+      Compromisso que vai além<br>do <em>doce</em>
+    </h2>
+    <p class="section-body reveal">
+      Na CandyCare, o cuidado não está apenas nos ingredientes que escolhemos — ele permeia cada decisão, cada relação e cada palavra que dizemos. Nosso Código de Ética nasce do propósito de ser uma empresa que genuinamente importa para as pessoas.
+    </p>
+    <p class="section-body reveal">
+      Acreditamos que toda empresa responsável deve definir com clareza como age no mundo. Por isso, estabelecemos princípios que guiam nossa equipe, nossas parcerias e a experiência que entregamos a cada cliente.
+    </p>
+    <div class="values-grid reveal">
+      <div class="value-card">
+        <p>Transparência</p>
+        <p>Somos honestos sobre o que fazemos e como fazemos.</p>
+      </div>
+      <div class="value-card">
+        <p>Cuidado</p>
+        <p>Cada decisão considera o bem-estar de quem nos escolhe.</p>
+      </div>
+      <div class="value-card">
+        <p>Excelência</p>
+        <p>Qualidade sem concessões, do ingrediente ao atendimento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILARES -->
+<section id="pilares">
+  <div class="pilares-inner">
+    <div class="reveal">
+      <div class="iso-pill">Os fundamentos da CandyCare</div>
+      <h2 class="section-title" style="font-size: clamp(2rem,4vw,3.6rem);">
+        Os pilares que nos<br><em>sustentam</em>
+      </h2>
+      <p class="section-body" style="max-width:540px; margin:0 auto;">
+        Assim como o Isomalte é a base dos nossos doces, nossa ética é a base de tudo que construímos — uma empresa sólida, confiável e verdadeiramente comprometida.
+      </p>
+    </div>
+    <div class="pilares-grid reveal">
+      <div class="pilar-card">
+        <p class="pilar-num">01</p>
+        <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        </svg>
+        <h3>Integridade</h3>
+        <p>Agimos com honestidade em todas as nossas relações — com clientes, fornecedores, colaboradores e com a comunidade. Somos coerentes entre o que prometemos e o que entregamos.</p>
+      </div>
+      <div class="pilar-card">
+        <p class="pilar-num">02</p>
+        <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
+        </svg>
+        <h3>Respeito</h3>
+        <p>Valorizamos cada pessoa que toca nossa marca. Nossos colaboradores são tratados com dignidade, e nossos clientes recebem atenção, cuidado e escuta genuína em cada interação.</p>
+      </div>
+      <div class="pilar-card">
+        <p class="pilar-num">03</p>
+        <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
+        <h3>Transparência</h3>
+        <p>Comunicamos com clareza o que está em cada produto, como produzimos e quais são nossas práticas. Não escondemos nada — porque confiança se constrói com verdade.</p>
+      </div>
+      <div class="pilar-card">
+        <p class="pilar-num">04</p>
+        <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+        </svg>
+        <h3>Qualidade</h3>
+        <p>Nunca abrimos mão da excelência. Cada bala, cada pirulito, cada embalagem passa por critérios rigorosos — porque quem nos escolhe merece sempre o melhor.</p>
+      </div>
+      <div class="pilar-card">
+        <p class="pilar-num">05</p>
+        <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M12 22C6 22 2 17 2 12S6 2 12 2s10 5 10 10-4 10-10 10z"/>
+          <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+          <line x1="9" y1="9" x2="9.01" y2="9"/>
+          <line x1="15" y1="9" x2="15.01" y2="9"/>
+        </svg>
+        <h3>Responsabilidade</h3>
+        <p>Assumimos nossas escolhas e suas consequências. Nos responsabilizamos pelo impacto que nossa empresa tem nas pessoas, na saúde e no meio ambiente.</p>
+      </div>
+      <div class="pilar-card">
+        <p class="pilar-num">06</p>
+        <svg class="pilar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="12" cy="8" r="7"/>
+          <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+        </svg>
+        <h3>Compromisso Social</h3>
+        <p>Acreditamos numa empresa que faz bem ao seu entorno. Apoiamos práticas sustentáveis, inclusão e o desenvolvimento das comunidades que nos acolhem.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEVERES -->
+<section id="deveres">
+  <div class="deveres-header reveal">
+    <div>
+      <p class="section-eyebrow">Nossos Compromissos</p>
+      <h2 class="section-title">Deveres da<br><em>CandyCare</em></h2>
+    </div>
+  </div>
+
+  <p style="font-size:0.62rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--rose-gold); margin-bottom:24px;" class="reveal">— Com nossos Clientes</p>
+  <div class="deveres-grid reveal">
+    <div class="dever-card">
+      <div class="dever-img" style="background:#fce8ec;">
+        <svg viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="28" stroke="#e8b4b0" stroke-width="0.8" fill="none"/>
+          <path d="M36 46 C36 40 50 34 50 42 C50 34 64 40 64 46 C64 56 50 64 50 64 C50 64 36 56 36 46Z" stroke="#c8956c" stroke-width="1" fill="none"/>
+          <path d="M40 52 C42 56 50 58 58 52" stroke="#e8b4b0" stroke-width="0.8" fill="none"/>
+        </svg>
+      </div>
+      <div class="dever-info">
+        <h3>Cuidar com genuinidade</h3>
+        <p>Tratar cada cliente como alguém especial, oferecendo produtos seguros, saborosos e adequados às suas necessidades de saúde.</p>
+        <span class="dever-tag">Clientes</span>
+      </div>
+    </div>
+    <div class="dever-card">
+      <div class="dever-img" style="background:#eef6e8;">
+        <svg viewBox="0 0 100 100" fill="none">
+          <rect x="28" y="32" width="44" height="36" rx="2" stroke="#b4c8b0" stroke-width="0.8" fill="none"/>
+          <line x1="36" y1="44" x2="64" y2="44" stroke="#c8956c" stroke-width="1"/>
+          <line x1="36" y1="54" x2="56" y2="54" stroke="#c8956c" stroke-width="0.7"/>
+          <path d="M44 68 L44 78 L56 78 L56 68" stroke="#b4c8b0" stroke-width="0.8" fill="none"/>
+        </svg>
+      </div>
+      <div class="dever-info">
+        <h3>Informar com clareza</h3>
+        <p>Garantir que rótulos, ingredientes e benefícios sejam comunicados de forma acessível, verdadeira e sem enganar quem nos escolhe.</p>
+        <span class="dever-tag">Clientes</span>
+      </div>
+    </div>
+    <div class="dever-card">
+      <div class="dever-img" style="background:#f5e8f0;">
+        <svg viewBox="0 0 100 100" fill="none">
+          <path d="M50 30 C38 30 28 40 28 52 C28 64 38 70 50 74 C62 70 72 64 72 52 C72 40 62 30 50 30Z" stroke="#d4a0c0" stroke-width="0.8" fill="none"/>
+          <polyline points="38,52 46,60 62,44" stroke="#c8956c" stroke-width="1.2" fill="none"/>
+        </svg>
+      </div>
+      <div class="dever-info">
+        <h3>Responder com agilidade</h3>
+        <p>Atender dúvidas, sugestões e reclamações com prontidão, respeito e vontade genuína de resolver — porque cada feedback é uma oportunidade de melhorar.</p>
+        <span class="dever-tag">Clientes</span>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:0.62rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--rose-gold); margin-bottom:24px;" class="reveal">— Com nossa Equipe</p>
+  <div class="deveres-grid reveal">
+    <div class="dever-card">
+      <div class="dever-img" style="background:#fef0e2;">
+        <svg viewBox="0 0 100 100" fill="none">
+          <circle cx="36" cy="42" r="12" stroke="#d4956c" stroke-width="0.8" fill="none"/>
+          <circle cx="64" cy="42" r="12" stroke="#d4956c" stroke-width="0.8" fill="none"/>
+          <path d="M20 72 C20 60 28 56 36 56 C44 56 56 56 64 56 C72 56 80 60 80 72" stroke="#c8956c" stroke-width="1" fill="none"/>
+        </svg>
+      </div>
+      <div class="dever-info">
+        <h3>Ambiente seguro e digno</h3>
+        <p>Assegurar condições de trabalho saudáveis, seguras e livres de qualquer forma de discriminação ou assédio — sempre.</p>
+        <span class="dever-tag">Equipe</span>
+      </div>
+    </div>
+    <div class="dever-card">
+      <div class="dever-img" style="background:#fdf6e0;">
+        <svg viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="40" r="18" stroke="#d4c080" stroke-width="0.8" fill="none"/>
+          <line x1="50" y1="22" x2="50" y2="58" stroke="#c8956c" stroke-width="0.8"/>
+          <line x1="32" y1="40" x2="68" y2="40" stroke="#c8956c" stroke-width="0.8"/>
+          <line x1="50" y1="58" x2="50" y2="74" stroke="#c8956c" stroke-width="1"/>
+          <path d="M38 74 L62 74" stroke="#d4c080" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="dever-info">
+        <h3>Crescimento e valorização</h3>
+        <p>Investir no desenvolvimento profissional e humano de cada pessoa da equipe, reconhecendo talentos e promovendo oportunidades reais de crescimento.</p>
+        <span class="dever-tag">Equipe</span>
+      </div>
+    </div>
+    <div class="dever-card">
+      <div class="dever-img" style="background:#e8f4f0;">
+        <svg viewBox="0 0 100 100" fill="none">
+          <circle cx="50" cy="50" r="28" stroke="#90c4b0" stroke-width="0.8" fill="none"/>
+          <path d="M36 50 C36 44 50 38 50 46 C50 38 64 44 64 50 C64 60 50 66 50 66 C50 66 36 60 36 50Z" stroke="#90c4b0" stroke-width="1" fill="none"/>
+          <line x1="50" y1="34" x2="50" y2="30" stroke="#90c4b0" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="dever-info">
+        <h3>Comunicação aberta</h3>
+        <p>Manter canais de diálogo transparentes com a equipe, ouvindo ativamente e acolhendo ideias, críticas e sugestões que fortalecem nossa cultura.</p>
+        <span class="dever-tag">Equipe</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRINCÍPIOS -->
+<section id="principios">
+  <div class="reveal" style="text-align:center; max-width:600px; margin:0 auto;">
+    <div class="deco-line" style="margin:0 auto 32px;"></div>
+    <p class="section-eyebrow">Como nos comportamos</p>
+    <h2 class="section-title">
+      Princípios de conduta<br>da <em>CandyCare</em>
+    </h2>
+    <p class="section-body">
+      Estes princípios orientam como cada membro da nossa equipe deve agir — com clientes, parceiros e entre si. São a nossa identidade em ação.
+    </p>
+  </div>
+
+  <div class="principios-grid reveal">
+    <div class="principio-card">
+      <svg class="principio-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" stroke="#e8b4b0" stroke-width="0.8"/>
+        <path d="M16 24 C16 20 24 16 24 20 C24 16 32 20 32 24 C32 30 24 34 24 34 C24 34 16 30 16 24Z" stroke="#c8956c" stroke-width="1" fill="none"/>
+        <line x1="24" y1="34" x2="24" y2="40" stroke="#c8956c" stroke-width="1"/>
+      </svg>
+      <h3>Nunca comprometer a saúde</h3>
+      <p>Nenhum interesse comercial justifica colocar em risco a saúde dos nossos clientes. A segurança alimentar é inegociável e vem antes de qualquer meta.</p>
+    </div>
+    <div class="principio-card">
+      <svg class="principio-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" stroke="#e8b4b0" stroke-width="0.8"/>
+        <rect x="14" y="18" width="20" height="14" rx="1" stroke="#c8956c" stroke-width="1" fill="none"/>
+        <line x1="18" y1="24" x2="30" y2="24" stroke="#c8956c" stroke-width="0.8"/>
+        <line x1="18" y1="28" x2="26" y2="28" stroke="#c8956c" stroke-width="0.7"/>
+        <line x1="24" y1="14" x2="24" y2="18" stroke="#c8956c" stroke-width="1"/>
+      </svg>
+      <h3>Honrar cada promessa</h3>
+      <p>Se prometemos algo, cumprimos. Seja um prazo de entrega, uma composição de produto ou um atendimento — nossa palavra tem peso e é levada a sério.</p>
+    </div>
+    <div class="principio-card">
+      <svg class="principio-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" stroke="#e8b4b0" stroke-width="0.8"/>
+        <circle cx="24" cy="20" r="6" stroke="#c8956c" stroke-width="1" fill="none"/>
+        <path d="M16 36 C16 30 20 28 24 28 C28 28 32 30 32 36" stroke="#c8956c" stroke-width="1" fill="none"/>
+      </svg>
+      <h3>Tratar todos com igualdade</h3>
+      <p>Nenhuma distinção por gênero, raça, crença, condição física ou qualquer outra característica. O cuidado da CandyCare é para todo mundo, sem exceções.</p>
+    </div>
+    <div class="principio-card">
+      <svg class="principio-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" stroke="#e8b4b0" stroke-width="0.8"/>
+        <path d="M14 28 C14 22 18 18 24 18 C30 18 34 22 34 28" stroke="#c8956c" stroke-width="1" fill="none"/>
+        <path d="M20 28 L24 24 L28 28" stroke="#c8956c" stroke-width="1" fill="none"/>
+      </svg>
+      <h3>Recusar vantagens indevidas</h3>
+      <p>Não aceitamos nem oferecemos favorecimentos, propinas ou vantagens que desviem nossa conduta do que é correto. Nossa reputação vale mais que qualquer ganho imediato.</p>
+    </div>
+    <div class="principio-card">
+      <svg class="principio-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" stroke="#e8b4b0" stroke-width="0.8"/>
+        <path d="M18 24 C18 20 24 16 24 20 C24 16 30 20 30 24 C30 28 24 32 24 32" stroke="#c8956c" stroke-width="1" fill="none"/>
+        <path d="M20 36 C22 34 26 34 28 36" stroke="#c8956c" stroke-width="0.8" fill="none"/>
+      </svg>
+      <h3>Preservar a privacidade</h3>
+      <p>Os dados dos nossos clientes e colaboradores são tratados com sigilo e responsabilidade. Nunca compartilhamos informações pessoais sem autorização expressa.</p>
+    </div>
+    <div class="principio-card">
+      <svg class="principio-icon" viewBox="0 0 48 48" fill="none">
+        <circle cx="24" cy="24" r="20" stroke="#e8b4b0" stroke-width="0.8"/>
+        <path d="M16 32 L24 16 L32 32" stroke="#c8956c" stroke-width="1" fill="none"/>
+        <line x1="19" y1="27" x2="29" y2="27" stroke="#c8956c" stroke-width="0.8"/>
+      </svg>
+      <h3>Pensar no amanhã</h3>
+      <p>Cada decisão considera o impacto de longo prazo — no meio ambiente, na saúde das pessoas e na sustentabilidade do nosso negócio. Construímos para durar.</p>
+    </div>
+  </div>
+</section>
+
+<!-- VEDAÇÕES -->
+<section id="vedacoes">
+  <div style="text-align:center; max-width:800px; margin:0 auto;">
+    <div class="reveal">
+      <div class="iso-pill">O que nunca fazemos</div>
+      <h2 class="section-title" style="font-size: clamp(2rem,4vw,3.6rem);">
+        Condutas que a CandyCare<br><em>não tolera</em>
+      </h2>
+      <p class="section-body" style="max-width:520px; margin:0 auto;">
+        Assim como somos claros sobre o que valorizamos, também somos claros sobre o que rejeitamos — porque limites bem definidos protegem a todos.
+      </p>
+    </div>
+    <div class="iso-compare reveal">
+      <div class="iso-col">
+        <p class="iso-col-label">Proibido para todos</p>
+        <p class="iso-col-title">Nunca aceitável</p>
+        <ul class="iso-list">
+          <li>Divulgar informações falsas sobre produtos ou concorrentes</li>
+          <li>Discriminar clientes ou colegas por qualquer motivo</li>
+          <li>Assediar moral ou sexualmente no ambiente de trabalho</li>
+          <li>Vazar dados pessoais de clientes ou colaboradores</li>
+          <li>Aceitar ou oferecer vantagens indevidas (propina, suborno)</li>
+          <li>Adulterar informações de qualidade ou composição</li>
+        </ul>
+      </div>
+      <p class="iso-vs">vs</p>
+      <div class="iso-col highlight">
+        <p class="iso-col-label">Nossa escolha</p>
+        <p class="iso-col-title gold">Sempre fazemos</p>
+        <ul class="iso-list">
+          <li>Comunicar com honestidade e precisão</li>
+          <li>Acolher e respeitar a diversidade em tudo</li>
+          <li>Manter um ambiente seguro e saudável</li>
+          <li>Proteger dados com responsabilidade e cuidado</li>
+          <li>Agir com integridade em cada negociação</li>
+          <li>Garantir a qualidade real de cada produto</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand">Candy<span>Care</span></p>
+      <p class="footer-desc">Sabor que cuida. Doces premium sem açúcar, desenvolvidos com Isomalte para quem merece o melhor — com ética do ingrediente ao atendimento.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+      <ul>
+        <li><a href="politica_atedimento.html">Política de Atendimento</a></li>
+        <li><a href="fluxo-atendimento.html">Fluxo de Atendimento</a></li>
+        <li><a href="central-reclamacoes.html">Central de Reclamações</a></li>
+        <li><a href="organograma.html">Organograma Setorial</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>CandyCare</h4>
+      <ul>
+        <li><a href="index2_0.html">Loja</a></li>
+        <li><a href="#">@candycare</a></li>
+        <li><a href="#">WhatsApp</a></li>
+        <li><a href="#">contato@candycare.com.br</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CandyCare. Todos os direitos reservados.</p>
+    <p>Feito com ✦ e muito Isomalte</p>
+  </div>
+</footer>
+
+<script>
+  // ── CURSOR ──
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  if (window.matchMedia('(pointer: fine)').matches) {
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx-4}px,${my-4}px)`;
+    });
+    function animateRing() {
+      rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+      ring.style.transform = `translate(${rx-14}px,${ry-14}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+  }
+
+  // ── MOBILE MENU ──
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+  function closeMenu() {
+    navToggle.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  // ── SCROLL REVEAL ──
+  const reveals = document.querySelectorAll('.reveal');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  reveals.forEach(r => obs.observe(r));
+</script>
+<!-- Botão de Voltar -->
+<a href="index.html" class="botao-voltar">
+  ← Voltar
+</a>
+
+<style>
+  .botao-voltar{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+    border-radius: 30px;
+
+    background-color: #f9e8e6;
+    color: #2a1f1e;
+
+    border: 2px solid #f2c4c4;
+
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(42, 31, 30, 0.12);
+
+    z-index: 999;
+  }
+
+  .botao-voltar:hover{
+    background-color: #f2c4c4;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(42, 31, 30, 0.18);
+  }
+
+  .botao-voltar:active{
+    transform: scale(0.98);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px){
+    .botao-voltar{
+      bottom: 15px;
+      right: 15px;
+
+      padding: 10px 18px;
+      font-size: 14px;
+    }
+  }
+</style>
+</body>
+</html>

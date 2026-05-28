@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <link rel="icon" href="icon/icon_candycare 4.0.png" type="image/png">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CandyCare — Organograma Setorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blush: #f2c4c4;
+    --nude: #e8b4b0;
+    --rose-gold: #c8956c;
+    --pale: #fdf5f3;
+    --white: #ffffff;
+    --soft-pink: #f9e8e6;
+    --text-dark: #2a1f1e;
+    --text-mid: #7a5c58;
+    --text-light: #b89490;
+    --gold: #c9a87c;
+    --divider: rgba(200,149,108,0.2);
+    /* aliases for existing classes */
+    --rose: #c8956c;
+    --rose-light: #e8b4b0;
+    --rose-pale: #f9e8e6;
+    --brown-dark: #6e4f4a;
+    --cream: #fdf5f3;
+    --cream-dark: rgba(200,149,108,0.2);
+    --text: #2a1f1e;
+    --support: #7a5c58;
+    --gold-light: #e8d5b0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Nav — igual ao site CandyCare */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 20px 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(253,245,243,0.95);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--divider);
+  }
+
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 300;
+    font-size: 1.6rem;
+    letter-spacing: 0.12em;
+    color: var(--text-dark);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--rose-gold); }
+
+  .nav-links {
+    display: flex;
+    gap: 40px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: 'Jost', sans-serif;
+    font-weight: 200;
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-mid);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--rose-gold); }
+  .nav-links a.active { color: var(--rose-gold); }
+
+  /* Hamburger */
+  .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+  }
+  .nav-toggle span {
+    display: block;
+    width: 24px; height: 1px;
+    background: var(--text-dark);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+  /* Mobile menu */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(253,245,243,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 150;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+  .mobile-menu.open { opacity: 1; pointer-events: all; }
+  .mobile-menu a {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--text-dark);
+    text-decoration: none;
+    letter-spacing: 0.1em;
+    transition: color 0.3s;
+  }
+  .mobile-menu a:hover { color: var(--rose-gold); }
+
+  @media (max-width: 768px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .nav-toggle { display: flex; }
+    .mobile-menu { display: flex; }
+  }
+
+  /* Footer */
+  footer {
+    background: var(--text-dark);
+    color: var(--text-light);
+    padding: 64px 60px 32px;
+    margin-top: 80px;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 32px;
+  }
+
+  .footer-brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .footer-brand span { color: var(--rose-gold); }
+
+  .footer-desc {
+    font-size: 0.82rem;
+    line-height: 1.8;
+    color: var(--text-light);
+    max-width: 300px;
+  }
+
+  .footer-col h4 {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--white);
+    margin-bottom: 20px;
+    font-weight: 300;
+  }
+
+  .footer-col ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .footer-col ul a {
+    font-size: 0.8rem;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: color 0.3s;
+    font-weight: 300;
+  }
+  .footer-col ul a:hover { color: var(--rose-gold); }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.72rem;
+    color: rgba(184,148,144,0.5);
+    font-weight: 200;
+    letter-spacing: 0.05em;
+  }
+
+  @media (max-width: 768px) {
+    footer { padding: 48px 24px 28px; }
+    .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+    .footer-bottom { flex-direction: column; gap: 8px; text-align: center; }
+  }
+
+  /* Background texture */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background:
+      radial-gradient(ellipse at 20% 20%, rgba(200,169,110,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 80%, rgba(196,148,138,0.08) 0%, transparent 60%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrapper {
+    position: relative;
+    z-index: 1;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* Header */
+  header {
+    text-align: center;
+    margin-bottom: 56px;
+    animation: fadeDown 0.8s ease both;
+  }
+
+  .header-line {
+    display: block;
+    width: 80px;
+    height: 1px;
+    background: var(--gold);
+    margin: 0 auto 20px;
+  }
+
+  header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--text);
+    text-transform: uppercase;
+  }
+
+  header h1 span {
+    color: var(--gold);
+  }
+
+  .header-sub {
+    margin-top: 10px;
+    font-size: 0.8rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  /* Presidente */
+  .presidente-wrap {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 0;
+    animation: fadeDown 0.9s ease 0.1s both;
+  }
+
+  .presidente-box {
+    background: linear-gradient(135deg, var(--gold) 0%, #b8965a 100%);
+    color: var(--white);
+    padding: 18px 60px;
+    border-radius: 10px;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    box-shadow: 0 8px 28px rgba(200,169,110,0.3);
+    position: relative;
+  }
+
+  .presidente-box::after {
+    content: '';
+    position: absolute;
+    bottom: -32px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1px;
+    height: 32px;
+    background: var(--gold-light);
+  }
+
+  /* Three columns connector */
+  .columns-connector {
+    display: flex;
+    justify-content: center;
+    margin-top: 0;
+    position: relative;
+    height: 32px;
+    animation: fadeUp 0.8s ease 0.3s both;
+  }
+
+  .h-line {
+    position: absolute;
+    top: 0;
+    width: 67%;
+    height: 1px;
+    background: var(--rose-light);
+  }
+
+  .v-line {
+    position: absolute;
+    top: 0;
+    width: 1px;
+    height: 32px;
+    background: var(--rose-light);
+  }
+
+  .v-left  { left: 16.5%; }
+  .v-mid   { left: 50%; }
+  .v-right { left: 83.5%; }
+
+  /* Main 3-column layout */
+  .columns {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 40px;
+  }
+
+  /* Sector card */
+  .sector {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 20px rgba(110,79,74,0.08);
+    border: 1px solid var(--cream-dark);
+    animation: fadeUp 0.8s ease both;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sector:nth-child(1) { animation-delay: 0.2s; }
+  .sector:nth-child(2) { animation-delay: 0.3s; }
+  .sector:nth-child(3) { animation-delay: 0.4s; }
+
+  .sector-header {
+    padding: 18px 22px 14px;
+    border-bottom: 1px solid var(--cream-dark);
+    position: relative;
+  }
+
+  .sector-header::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 0;
+  }
+
+  .sector-comercial .sector-header::before { background: linear-gradient(90deg, var(--rose), var(--rose-light)); }
+  .sector-operacoes  .sector-header::before { background: linear-gradient(90deg, var(--brown-dark), var(--rose)); }
+  .sector-admin      .sector-header::before { background: linear-gradient(90deg, var(--support), var(--rose-light)); }
+
+  .sector-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    font-weight: 400;
+    margin-bottom: 4px;
+  }
+
+  .sector-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text);
+  }
+
+  .sector-comercial .sector-title { color: var(--rose); }
+  .sector-operacoes  .sector-title { color: var(--brown-dark); }
+  .sector-admin      .sector-title { color: var(--support); }
+
+  /* Department items inside sector */
+  .dept-list {
+    padding: 14px 16px 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+  }
+
+  .dept-item {
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .dept-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(110,79,74,0.12);
+  }
+
+  .dept-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 14px;
+    background: var(--rose-pale);
+  }
+
+  .dept-name {
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .dept-toggle {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--rose-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    color: var(--brown-dark);
+    flex-shrink: 0;
+    transition: transform 0.3s ease, background 0.2s;
+  }
+
+  .dept-item.open .dept-toggle {
+    transform: rotate(45deg);
+    background: var(--rose);
+    color: white;
+  }
+
+  .dept-desc {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, padding 0.3s ease;
+    background: var(--white);
+    padding: 0 14px;
+  }
+
+  .dept-item.open .dept-desc {
+    max-height: 200px;
+    padding: 10px 14px 12px;
+  }
+
+  .dept-desc p {
+    font-size: 0.78rem;
+    line-height: 1.65;
+    color: var(--text-light);
+    font-weight: 300;
+  }
+
+  /* Flow section */
+  .flow-section {
+    animation: fadeUp 0.8s ease 0.5s both;
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .section-title::before,
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--cream-dark);
+  }
+
+  .flow-wrap {
+    background: var(--white);
+    border-radius: 14px;
+    border: 1px solid var(--cream-dark);
+    padding: 24px 28px;
+    box-shadow: 0 2px 16px rgba(110,79,74,0.06);
+  }
+
+  .flow-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 14px;
+    font-weight: 400;
+  }
+
+  .flow-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0;
+    margin-bottom: 10px;
+  }
+
+  .flow-node {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .flow-pill {
+    background: var(--rose-pale);
+    border: 1px solid var(--rose-light);
+    border-radius: 6px;
+    padding: 6px 13px;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    transition: background 0.2s, border-color 0.2s;
+    cursor: default;
+  }
+
+  .flow-pill:hover {
+    background: var(--rose-light);
+    border-color: var(--rose);
+  }
+
+  .flow-arrow {
+    color: var(--gold);
+    font-size: 1rem;
+    padding: 0 4px;
+    line-height: 1;
+  }
+
+  /* Support sector */
+  .support-section {
+    animation: fadeUp 0.8s ease 0.6s both;
+  }
+
+  .support-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+
+  .support-card {
+    background: var(--white);
+    border-radius: 12px;
+    border: 1px solid var(--cream-dark);
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 12px rgba(110,79,74,0.05);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .support-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  }
+
+  .support-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(110,79,74,0.12);
+  }
+
+  .support-name {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .support-desc {
+    font-size: 0.74rem;
+    line-height: 1.6;
+    color: var(--text-light);
+    font-weight: 300;
+    display: none;
+  }
+
+  .support-card.expanded .support-desc {
+    display: block;
+  }
+
+  .support-card .expand-icon {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    font-size: 11px;
+    color: var(--gold);
+    transition: transform 0.3s ease;
+  }
+
+  .support-card.expanded .expand-icon {
+    transform: rotate(45deg);
+  }
+
+  /* Animations */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .columns { grid-template-columns: 1fr; }
+    .support-grid { grid-template-columns: 1fr 1fr; }
+    .h-line { width: 0; }
+    .v-left, .v-right { display: none; }
+    .v-mid { left: 50%; }
+  }
+
+  @media (max-width: 480px) {
+    .support-grid { grid-template-columns: 1fr; }
+    .flow-row { gap: 4px; }
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Candy<span>Care</span></a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Organograma</a></li>
+  </ul>
+  <button class="nav-toggle" id="navToggle" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html" onclick="closeMenu()">Home</a>
+  <a href="index.html#sobre" onclick="closeMenu()">Nossa História</a>
+  <a href="index.html#produtos" onclick="closeMenu()">Produtos</a>
+  <a href="#" onclick="closeMenu()">Organograma</a>
+</div>
+
+<div class="wrapper">
+
+  <header>
+    <span class="header-line"></span>
+    <h1>Organograma <span>Setorial</span></h1>
+    <p class="header-sub">Estrutura Organizacional da Empresa</p>
+  </header>
+
+  <!-- Presidente -->
+  <div class="presidente-wrap">
+    <div class="presidente-box">Presidente</div>
+  </div>
+
+  <!-- Horizontal connector lines -->
+  <div class="columns-connector">
+    <div class="h-line"></div>
+    <div class="v-line v-left"></div>
+    <div class="v-line v-mid"></div>
+    <div class="v-line v-right"></div>
+  </div>
+
+  <!-- Three main sectors -->
+  <div class="columns">
+
+    <!-- COMERCIAL -->
+    <div class="sector sector-comercial">
+      <div class="sector-header">
+        <div class="sector-label">Setor</div>
+        <div class="sector-title">Comercial</div>
+      </div>
+      <div class="dept-list">
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Marketing</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pela divulgação da marca e dos produtos, utilizando campanhas, redes sociais e estratégias de marketing para atrair clientes e fortalecer a presença da empresa no mercado.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Vendas</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável por apresentar os produtos aos clientes, negociar pedidos e realizar as vendas, garantindo o atendimento das metas comerciais da empresa.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Atendimento</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Realiza o atendimento ao cliente, esclarecendo dúvidas, acompanhando pedidos e registrando informações importantes sobre produtos e serviços.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- OPERAÇÕES -->
+    <div class="sector sector-operacoes">
+      <div class="sector-header">
+        <div class="sector-label">Setor</div>
+        <div class="sector-title">Operações</div>
+      </div>
+      <div class="dept-list">
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Compras</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pela compra de matérias-primas, embalagens e insumos necessários para o funcionamento da produção.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Almoxarifado</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pelo recebimento, armazenamento, organização e controle dos materiais, ingredientes e embalagens utilizados na produção.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Produção</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pela fabricação dos doces, seguindo os padrões de qualidade, higiene e produtividade da empresa.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Logística</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pela separação, transporte e entrega dos produtos, garantindo que os pedidos cheguem corretamente aos clientes.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">TI</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pelo suporte tecnológico, manutenção de sistemas, equipamentos e segurança das informações da empresa.</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ADMINISTRATIVO -->
+    <div class="sector sector-admin">
+      <div class="sector-header">
+        <div class="sector-label">Setor</div>
+        <div class="sector-title">Administrativo</div>
+      </div>
+      <div class="dept-list">
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">RH</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pelo recrutamento e seleção de funcionários, treinamentos, integração de colaboradores, desenvolvimento profissional, clima organizacional e apoio na gestão de pessoas.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">DP</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Responsável pela folha de pagamento, admissões, demissões, controle de benefícios, férias, ponto e demais rotinas trabalhistas.</p></div>
+        </div>
+        <div class="dept-item" onclick="toggleDept(this)">
+          <div class="dept-header">
+            <span class="dept-name">Financeiro</span>
+            <span class="dept-toggle">+</span>
+          </div>
+          <div class="dept-desc"><p>Controla pagamentos, recebimentos, fluxo de caixa, custos, emissão de notas e organização financeira da empresa.</p></div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /columns -->
+
+  <!-- FLOW -->
+  <div class="flow-section">
+    <div class="section-title">Fluxo Operacional</div>
+    <div class="flow-wrap">
+      <div class="flow-label">Fluxo Principal</div>
+      <div class="flow-row">
+        <div class="flow-node"><div class="flow-pill">Marketing</div><span class="flow-arrow">→</span></div>
+        <div class="flow-node"><div class="flow-pill">Vendas</div><span class="flow-arrow">→</span></div>
+        <div class="flow-node"><div class="flow-pill">Atendimento</div><span class="flow-arrow">→</span></div>
+        <div class="flow-node"><div class="flow-pill">Compras</div><span class="flow-arrow">→</span></div>
+        <div class="flow-node"><div class="flow-pill">Almoxarifado</div><span class="flow-arrow">→</span></div>
+        <div class="flow-node"><div class="flow-pill">Produção</div><span class="flow-arrow">→</span></div>
+        <div class="flow-node"><div class="flow-pill">Logística</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SUPPORT -->
+  <div class="support-section">
+    <div class="section-title">Setores de Apoio</div>
+    <div class="support-grid">
+      <div class="support-card" onclick="toggleSupport(this)">
+        <span class="expand-icon">+</span>
+        <div class="support-name">Financeiro</div>
+        <div class="support-desc">Controla pagamentos, recebimentos, fluxo de caixa, custos, emissão de notas e organização financeira da empresa.</div>
+      </div>
+      <div class="support-card" onclick="toggleSupport(this)">
+        <span class="expand-icon">+</span>
+        <div class="support-name">RH</div>
+        <div class="support-desc">Recrutamento, seleção, treinamentos, desenvolvimento profissional, clima organizacional e gestão de pessoas.</div>
+      </div>
+      <div class="support-card" onclick="toggleSupport(this)">
+        <span class="expand-icon">+</span>
+        <div class="support-name">DP</div>
+        <div class="support-desc">Folha de pagamento, admissões, demissões, benefícios, férias, ponto e rotinas trabalhistas.</div>
+      </div>
+      <div class="support-card" onclick="toggleSupport(this)">
+        <span class="expand-icon">+</span>
+        <div class="support-name">TI</div>
+        <div class="support-desc">Suporte tecnológico, manutenção de sistemas, equipamentos e segurança das informações da empresa.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /wrapper -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <p class="footer-brand">Candy<span>Care</span></p>
+      <p class="footer-desc">Sabor que cuida. Doces premium sem açúcar, desenvolvidos com Isomalte para quem merece o melhor.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navegação</h4>
+    <ul>
+        <li><a href="politica_atedimento.html">Política de Atendimento</a></li>
+        <li><a href="fluxo-atendimento.html">Fluxo de Atendimento</a></li>
+        <li><a href="central-reclamacoes.html">Central de Reclamações</a></li>
+        <li><a href="etica-candycare.html">Código de Ética da CandyCare</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contato</h4>
+      <ul>
+        <li><a href="#">contato@candycare.com.br</a></li>
+        <li><a href="https://www.instagram.com/candyzcare?utm_source=qr&igsh=MWNyMGQ0YnM2eGltag==">@candycare</a></li>
+        <li><a href="#">WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 CandyCare. Todos os direitos reservados.</p>
+    <p>Feito com ✦ e muito Isomalte</p>
+  </div>
+</footer>
+
+<script>
+  function toggleDept(el) {
+    el.classList.toggle('open');
+  }
+
+  function toggleSupport(el) {
+    el.classList.toggle('expanded');
+  }
+
+  // Mobile menu
+  const navToggle = document.getElementById('navToggle');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  navToggle.addEventListener('click', () => {
+    navToggle.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  function closeMenu() {
+    navToggle.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+</script>
+<!-- Botão de Voltar -->
+<a href="index.html" class="botao-voltar">
+  ← Voltar
+</a>
+
+<style>
+  .botao-voltar{
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 12px 22px;
+    border-radius: 30px;
+
+    background-color: #f9e8e6;
+    color: #2a1f1e;
+
+    border: 2px solid #f2c4c4;
+
+    text-decoration: none;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(42, 31, 30, 0.12);
+
+    z-index: 999;
+  }
+
+  .botao-voltar:hover{
+    background-color: #f2c4c4;
+    color: #ffffff;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 6px 14px rgba(42, 31, 30, 0.18);
+  }
+
+  .botao-voltar:active{
+    transform: scale(0.98);
+  }
+
+  /* Responsividade */
+  @media (max-width: 768px){
+    .botao-voltar{
+      bottom: 15px;
+      right: 15px;
+
+      padding: 10px 18px;
+      font-size: 14px;
+    }
+  }
+</style>
+</body>
+</html>
